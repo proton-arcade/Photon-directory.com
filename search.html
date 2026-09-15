@@ -1,0 +1,277 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Search the index — Photon.Directory</title>
+<meta name="description" content="Look up anything in the hub: type mkv, snake, minecraft or notes and the matching entries print out. Search runs over the local index in this page.">
+<meta name="theme-color" content="#0a0d16">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%230a0d16'/%3E%3Crect x='3.5' y='3.5' width='25' height='25' fill='none' stroke='%23f2c14e' stroke-width='3'/%3E%3Crect x='9' y='10' width='14' height='2.5' fill='%23e8e3d9'/%3E%3Crect x='9' y='15' width='14' height='2.5' fill='%238fb7f0'/%3E%3Crect x='9' y='20' width='8' height='2.5' fill='%23c2303f'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <a class="logo" href="index.html">Photon<span>.</span>Directory</a>
+    <span class="tag">search &middot; local index &middot; no crawler</span>
+  </div>
+</header>
+
+<nav>
+  <div class="wrap">
+    <a class="btn" href="index.html">Home</a>
+    <a class="btn" href="games.html">Game Cabinet</a>
+    <a class="btn" href="player.html">Media Player</a>
+    <a class="btn" href="eagler.html">Eaglercraft</a>
+    <a class="btn" href="notepad.html">Notepad</a>
+    <a class="btn" href="sketch.html">Sketch Pad</a>
+    <a class="btn" href="search.html">Search</a>
+    <a class="btn hot" href="brief.html">Design Brief &rarr;</a>
+  </div>
+</nav>
+
+<div class="bar">
+  <div class="wrap">
+    <span class="lbl">FIND</span>
+    <marquee behavior="scroll" scrolldelay="80" loop="0">
+      try: mkv · snake · captions · offline · drawing · relays · frame step · 1.8 · autosave &middot; every word in the box is in the index &middot; nothing is sent anywhere &middot;
+    </marquee>
+    <a class="btn" href="index.html">back to the index</a>
+  </div>
+</div>
+
+<main class="wrap">
+
+  <section class="tight">
+    <p class="kicker">One box, the whole hub</p>
+    <h1>Search the index.</h1>
+    <div class="indent">
+      <p class="lead" style="max-width:56ch">
+        Six pages of titles, blurbs and keywords, matched in the page you are standing in. There is
+        no crawler and nothing to rate-limit, so it answers as fast as you type.
+      </p>
+    </div>
+  </section>
+
+  <section id="box" class="tight">
+    <form id="f" autocomplete="off" onsubmit="return false">
+      <div class="row">
+        <input id="q" name="q" type="search" placeholder="mkv, snake, captions, drawings…"
+          style="flex:1 1 260px;min-width:180px;font-size:16px;padding:8px 10px"
+          aria-label="search the hub index" autofocus>
+        <button type="button" class="btn" id="go">look it up</button>
+        <button type="button" class="btn" id="clr">clear</button>
+      </div>
+    </form>
+    <div class="row mt8" id="cats" role="group" aria-label="narrow to a group"></div>
+    <p class="xs faint" id="stats" style="margin:8px 0 0">&nbsp;</p>
+  </section>
+
+  <section id="results" class="tight">
+    <div class="dir" id="hits" aria-live="polite"></div>
+    <p class="dir-note" id="keys-note">
+      <kbd>&uarr;</kbd> <kbd>&darr;</kbd> to move, <kbd>enter</kbd> to open, <kbd>/</kbd> to get back to the box.
+    </p>
+  </section>
+
+  <section id="recent" class="tight">
+    <div class="cols">
+      <div>
+        <h3>Looked up here before</h3>
+        <p class="row" id="recent-row"></p>
+      </div>
+      <div>
+        <h3>Words that always land somewhere</h3>
+        <p class="row" id="always-row"></p>
+      </div>
+    </div>
+  </section>
+
+  <hr class="rule">
+
+  <section id="how">
+    <div class="cols">
+      <div>
+        <h2>How it scores a hit</h2>
+        <p class="small" style="max-width:56ch">
+          Each word in the box is looked for in the title (12 if it starts the title, 8 if it only
+          appears), the file name (5), the keyword line (7 when it is a whole keyword, 4 inside one)
+          and the blurb (3). A word nothing matches subtracts 2, which is how
+          <code>video flute</code> comes back empty instead of showing you the media player anyway.
+        </p>
+        <p class="small" style="max-width:56ch">
+          Your last eight lookups are kept in <code>localStorage</code> as
+          <code>photon.searches.v1</code>, so this page can offer them back. It is the only thing
+          search remembers.
+        </p>
+        <p class="row">
+          <button type="button" class="btn" id="forget">forget what I searched</button>
+          <a class="btn" href="index.html">the whole index, unfiltered</a>
+        </p>
+      </div>
+      <div style="flex:0 1 260px">
+        <div class="box">
+          <h3 style="margin-bottom:6px">Misses are useful</h3>
+          <p class="small mb0" style="margin-bottom:0">
+            When a lookup finds nothing the page prints the word it could not place, and that is
+            the list I work from: a hub that cannot be searched for <em>flac</em> is a hub missing a
+            line about flac. Adding a row means adding one entry to
+            <code>js/index-data.js</code>.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="ring mt24" id="ring"></div>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <p style="margin:0 0 6px">Photon.Directory &middot; index search &middot; scoring in <code>js/directory.js</code></p>
+    <p style="margin:0"><a href="index.html">Index</a> <span class="sep">|</span> <a href="brief.html">Brief</a></p>
+  </div>
+</footer>
+
+<script src="js/index-data.js"></script>
+<script src="js/directory.js"></script>
+<script>
+(function () {
+  "use strict";
+  var q = PH.qs("#q"), hits = PH.qs("#hits"), cat = "all", sel = -1;
+  var SKEY = "photon.searches.v1";
+
+  PH.markNav();
+  PH.mountRing(PH.qs("#ring"));
+
+  var cats = (function () {
+    var seen = {}, out = [{ id: "all", label: "everything" }];
+    PH.ordered().concat(PH.pins()).forEach(function (s) {
+      if (seen[s.cat]) return;
+      seen[s.cat] = 1;
+      out.push({ id: s.cat, label: s.cat });
+    });
+    return out;
+  })();
+  PH.qs("#cats").innerHTML = cats.map(function (c) {
+    return '<button type="button" class="btn' + (c.id === cat ? " on" : "") + '" data-cat="' + c.id + '">' + PH.esc(c.label) + "</button>";
+  }).join("");
+  PH.on(PH.qs("#cats"), "click", function (e) {
+    var b = e.target.closest ? e.target.closest("[data-cat]") : null;
+    if (!b) return;
+    cat = b.getAttribute("data-cat");
+    PH.qsa("#cats button").forEach(function (x) { x.classList.toggle("on", x.getAttribute("data-cat") === cat); });
+    run();
+  });
+
+  function remember(term) {
+    if (!term) return;
+    var list = PH.store.get(SKEY, []) || [];
+    list = [term].concat(list.filter(function (t) { return t !== term; })).slice(0, 8);
+    PH.store.set(SKEY, list);
+    recent();
+  }
+  function recent() {
+    var list = PH.store.get(SKEY, []) || [];
+    var row = PH.qs("#recent-row");
+    if (!list.length) { row.innerHTML = '<span class="xs faint">nothing yet — this box has a memory and not much else</span>'; return; }
+    row.innerHTML = list.map(function (t) {
+      return '<button type="button" class="btn" data-term="' + PH.esc(t) + '">' + PH.esc(t) + "</button>";
+    }).join("");
+  }
+  function always() {
+    var words = ["mkv", "snake", "captions", "offline", "drawing", "relays", "frame step", "1.8", "autosave", "pin"];
+    PH.qs("#always-row").innerHTML = words.map(function (w) {
+      return '<button type="button" class="btn" data-term="' + w + '">' + w + "</button>";
+    }).join("");
+  }
+  PH.on(document, "click", function (e) {
+    var b = e.target.closest ? e.target.closest("[data-term]") : null;
+    if (!b) return;
+    q.value = b.getAttribute("data-term");
+    run();
+    q.focus();
+  });
+
+  function rows(list, term) {
+    if (!list.length) {
+      hits.classList.add("dir");
+      hits.innerHTML = '<div class="dir-row shown"><span class="n">—</span><span class="who">' +
+        '<span class="sub">Nothing in the index matches <b>' + PH.esc(term) + "</b> in " +
+        (cat === "all" ? "any group" : cat) + ".</span>" +
+        '<br><span class="xs faint">The drawer holds ' + PH.ordered().length +
+        " sites and " + PH.pins().length + " of yours. Try one word instead of two.</span></span>" +
+        '<span class="go"><a class="btn" href="index.html">see the whole index</a></span></div>';
+      PH.qs("#stats").textContent = "0 hits";
+      return;
+    }
+    PH.print(hits, list, { speed: 45, allowDelete: true }).then(function (n) {
+      sel = -1;
+      PH.qs("#stats").innerHTML = n + " hit" + (n === 1 ? "" : "s") +
+        (term ? " for <b style=\"color:#ffd77a\">" + PH.esc(term) + "</b>" : " in the drawer") +
+        " · scored across title, file, keywords and blurb";
+    });
+  }
+
+  function run() {
+    var term = q.value.trim();
+    var list = PH.search(term, cat);
+    remember(term);
+    rows(list, term);
+    var u = new URL(location.href);
+    u.search = term ? "?q=" + encodeURIComponent(term) : "";
+    u.hash = "";
+    history.replaceState(null, "", u.href);
+  }
+
+  /* keyboard */
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "/" && !/input|textarea|select/i.test(e.target.tagName || "")) {
+      e.preventDefault(); q.focus(); q.select(); return;
+    }
+    if (e.key === "Escape") { q.value = ""; run(); return; }
+    var all = PH.qsa(".dir-row", hits);
+    if (!all.length) return;
+    if (e.key === "ArrowDown" || (e.key === "n" && e.ctrlKey)) {
+      e.preventDefault();
+      sel = (sel + 1) % all.length;
+      paint(all);
+    } else if (e.key === "ArrowUp" || (e.key === "p" && e.ctrlKey)) {
+      e.preventDefault();
+      sel = sel <= 0 ? all.length - 1 : sel - 1;
+      paint(all);
+    } else if (e.key === "Enter" && document.activeElement !== q) {
+      var link = all[sel >= 0 ? sel : 0].querySelector("a");
+      if (link) location.href = link.href;
+    }
+  });
+  function paint(all) {
+    all.forEach(function (r, i) {
+      r.style.outline = i === sel ? "2px solid #f2c14e" : "";
+      r.style.background = i === sel ? "#16233d" : "";
+      if (i === sel) r.scrollIntoView({ block: "nearest" });
+    });
+  }
+
+  q.addEventListener("input", function () { run(); });
+  PH.qs("#go").addEventListener("click", run);
+  PH.qs("#clr").addEventListener("click", function () { q.value = ""; run(); q.focus(); });
+  PH.qs("#forget").addEventListener("click", function () {
+    PH.store.del(SKEY);
+    recent();
+    PH.qs("#forget").textContent = "forgotten";
+  });
+
+  /* first paint: honour ?q=, otherwise print the whole drawer */
+  var start = new URLSearchParams(location.search).get("q") || "";
+  q.value = start;
+  recent();
+  always();
+  run();
+  document.title = (start ? start + " — " : "") + "Search the index — Photon.Directory";
+})();
+</script>
+</body>
+</html>

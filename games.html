@@ -1,0 +1,265 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Game Cabinet — Photon.Directory</title>
+<meta name="description" content="Seven hand-written games that run in one canvas or grid: Snake, Minesweeper, 2048, Pong, a fresh maze each time, Lights Out and a typing drill. No download, no network.">
+<meta name="theme-color" content="#0a0d16">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%230a0d16'/%3E%3Crect x='3.5' y='3.5' width='25' height='25' fill='none' stroke='%23f2c14e' stroke-width='3'/%3E%3Crect x='9' y='10' width='14' height='2.5' fill='%23e8e3d9'/%3E%3Crect x='9' y='15' width='14' height='2.5' fill='%238fb7f0'/%3E%3Crect x='9' y='20' width='8' height='2.5' fill='%23c2303f'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <a class="logo" href="index.html">Photon<span>.</span>Directory</a>
+    <span class="tag">game cabinet &middot; seven games &middot; nothing to download</span>
+  </div>
+</header>
+
+<nav>
+  <div class="wrap">
+    <a class="btn" href="index.html">Home</a>
+    <a class="btn" href="games.html">Game Cabinet</a>
+    <a class="btn" href="player.html">Media Player</a>
+    <a class="btn" href="eagler.html">Eaglercraft</a>
+    <a class="btn" href="notepad.html">Notepad</a>
+    <a class="btn" href="sketch.html">Sketch Pad</a>
+    <a class="btn" href="search.html">Search</a>
+    <a class="btn hot" href="brief.html">Design Brief &rarr;</a>
+  </div>
+</nav>
+
+<div class="bar">
+  <div class="wrap">
+    <span class="lbl">CABINET</span>
+    <marquee behavior="scroll" scrolldelay="80" loop="0">
+      every score below is kept in this browser and nowhere else &middot; arrows, WASD and a thumb all work &middot; the maze is cut again every time you ask &middot; Pong is beatable, the machine has a flat foot on purpose &middot;
+    </marquee>
+    <a class="btn" href="index.html">back to the index</a>
+  </div>
+</div>
+
+<main class="wrap">
+
+  <section class="loose">
+    <p class="kicker">Games &middot; one file, 60 KB, no images</p>
+    <h1>The cabinet is seven games and a scoreboard.</h1>
+    <div class="indent">
+      <p class="lead">
+        Each one is written for this page rather than embedded: the deciding logic is a plain
+        function, so <code>node tools/test-logic.js</code> can check the merge rules and the
+        flood fill without a browser open. What you get on the screen is the same code the tests
+        exercise, not a demo reel of it.
+      </p>
+      <p style="max-width:56ch">
+        Pick a game below. The address bar keeps the choice, so a link to
+        <code>games.html#mines</code> opens on Minesweeper.
+      </p>
+    </div>
+  </section>
+
+  <!-- CHOOSER, printed like the rest of the hub -->
+  <section id="choose" class="tight">
+    <div class="spread">
+      <h2 style="margin-bottom:2px">Shelf</h2>
+      <span class="xs" id="shelf-count">&nbsp;</span>
+    </div>
+    <div id="shelf" class="dir" aria-label="list of games"></div>
+  </section>
+
+  <!-- THE GAME ITSELF -->
+  <section id="stage">
+    <hr class="rule">
+    <div class="spread">
+      <h2 id="game-title" style="margin-bottom:2px">Snake</h2>
+      <span class="xs" id="game-tag">&nbsp;</span>
+    </div>
+    <p class="small dim" id="game-hint" style="max-width:58ch">&nbsp;</p>
+    <div id="game" aria-live="polite"></div>
+    <p class="xs faint mt8" id="focus-note">
+      If the arrow keys scroll the page instead of the snake, click once on the board and try again.
+    </p>
+  </section>
+
+  <hr class="rule">
+
+  <!-- SCOREBOARD -->
+  <section id="scores">
+    <p class="kicker">Kept in this browser</p>
+    <h2>Scoreboard</h2>
+    <div class="cols">
+      <div style="flex:2 1 360px">
+        <table>
+          <tr>
+            <th style="width:130px">Game</th><th>Best</th><th>Games run</th><th>Last played</th>
+          </tr>
+          <tbody id="score-rows"></tbody>
+        </table>
+        <p class="row mt8">
+          <button type="button" class="btn" id="wipe-scores">Wipe the board</button>
+        </p>
+        <p class="xs faint" id="score-note"></p>
+      </div>
+      <div style="flex:1 1 240px">
+        <div class="draw" data-art="img/cabinet.png" data-w="360"
+             data-alt="Ink drawing of a small cabinet on legs with a squat CRT inside, a two-button joystick and a coin slot, screen showing a snake of filled squares.">
+          <b>DRAW THIS &mdash; IMAGE 3</b> <span class="size">(tall, roughly 360 &times; 520)</span>
+          <p style="margin:8px 0 0">A cabinet, but a piece of furniture rather than an arcade machine: four legs, a shelf underneath with a shoe box of spare cables on it. The CRT sits inside the frame, screen on, showing a snake of filled squares and one filled square apart from it. Two buttons and a joystick ball on the sloped panel. One corner of the top has a cup ring. Draw the shadow only under the cabinet, nowhere else.</p>
+          <p style="margin:8px 0 0" class="size">SAVE AS: <code>img/cabinet.png</code></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- NOTES -->
+  <section class="tight">
+    <div class="cols">
+      <div>
+        <h3>Controls, all of them</h3>
+        <table>
+          <tr><th style="width:110px">Game</th><th>Keys</th><th style="width:150px">Touch</th></tr>
+          <tr><td>Snake</td><td><kbd>&uarr;</kbd> <kbd>&darr;</kbd> <kbd>&larr;</kbd> <kbd>&rarr;</kbd> or <kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd></td><td>tap a side of the board</td></tr>
+          <tr><td>Minesweeper</td><td>mouse only</td><td>dig / flag toggle</td></tr>
+          <tr><td>2048</td><td>arrows or WASD</td><td>swipe the grid</td></tr>
+          <tr><td>Pong</td><td><kbd>W</kbd> <kbd>S</kbd> or arrows</td><td>drag the left half</td></tr>
+          <tr><td>Maze</td><td>arrows or WASD</td><td>the four arrows under the board</td></tr>
+          <tr><td>Lights Out</td><td>click any lamp</td><td>tap</td></tr>
+          <tr><td>Word Drill</td><td>type, then <kbd>space</kbd></td><td>on-screen keyboard</td></tr>
+        </table>
+      </div>
+      <div>
+        <h3>Two things I will say up front</h3>
+        <p class="small">
+          The typing drill uses a list of 700 common words rather than a dictionary, because
+          a drill that teaches you to type <code>quixotic</code> is teaching you nothing about
+          the words you actually write.
+        </p>
+        <p class="small">
+          Pong's machine reacts to the ball with a fixed, slightly stupid delay. It is not
+          tuned to be hard; it is tuned so that a person who has not played since 1985 can
+          still win a set. If you find it too soft, the number is <code>0.075</code> in
+          <code>js/games.js</code>.
+        </p>
+        <p class="note small" style="margin-bottom:0">
+          Nothing in the cabinet phones home, so there is no leaderboard. Your best run is
+          the only record that exists.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <div class="ring mt24" id="ring"></div>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <p style="margin:0 0 6px">Photon.Directory &middot; game cabinet &middot; seven games, one <code>js/games.js</code></p>
+    <p style="margin:0"><a href="index.html">Index</a> <span class="sep">|</span> <a href="player.html">Media player</a> <span class="sep">|</span> <a href="eagler.html">EaglercraftX</a></p>
+  </div>
+</footer>
+
+<script src="js/index-data.js"></script>
+<script src="js/directory.js"></script>
+<script src="js/games.js"></script>
+<script>
+(function () {
+  "use strict";
+  Games.store = PH.store;
+  PH.markNav();
+  PH.mountRing(PH.qs("#ring"));
+  PH.hydrateArt();
+
+  var stage = PH.qs("#game");
+  var cleanup = null;
+  var current = null;
+
+  /* the shelf is the same directory widget as the front page, so a game is
+     entered the same way a site is */
+  function shelf() {
+    var rows = Games.list.map(function (g, i) {
+      var sc = Games.best(g.id) || {};
+      var bestTxt = sc.high ? sc.high + (g.id === "mines" || g.id === "maze" ? "" : " pts")
+        : (sc.ms ? sc.ms + " s" : (sc.low ? sc.low + " presses" : "—"));
+      return '<div class="dir-row" data-game="' + g.id + '">' +
+        '<span class="n">' + (i + 1) + '.</span>' +
+        '<span class="who"><a href="#' + g.id + '">' + PH.esc(g.name) + "</a>" +
+        '<br><span class="sub">' + PH.esc(g.hint) + "</span>" +
+        '<br><span class="xs dim">' + PH.esc(g.tag) + "</span></span>" +
+        '<span class="meta">best<br><b style="color:#ffd77a">' + PH.esc(bestTxt) + "</b></span>" +
+        '<span class="go"><button type="button" class="btn" data-play="' + g.id + '">play &rarr;</button></span>' +
+        "</div>";
+    }).join("");
+    var host = PH.qs("#shelf");
+    host.classList.add("dir");
+    host.innerHTML = rows;
+    PH.reveal(PH.qsa(".dir-row", host));
+    PH.qs("#shelf-count").textContent = Games.list.length + " games, all local";
+    PH.on(host, "click", function (ev) {
+      var b = ev.target.closest ? ev.target.closest("[data-play]") : null;
+      if (b) { ev.preventDefault(); location.hash = b.getAttribute("data-play"); }
+    });
+  }
+
+  function play(id) {
+    var g = Games.list.filter(function (x) { return x.id === id; })[0];
+    if (!g) id = "snake";
+    if (id === current) return;
+    if (cleanup) { try { cleanup(); } catch (e) { /* a game that cannot be torn down is a bug worth knowing about */ } }
+    cleanup = null;
+    current = id;
+    stage.innerHTML = "";
+    g = Games.list.filter(function (x) { return x.id === id; })[0];
+    PH.qs("#game-title").textContent = g.name;
+    PH.qs("#game-tag").textContent = g.tag + " · " + g.needs;
+    PH.qs("#game-hint").textContent = g.hint;
+    document.title = g.name + " — Game Cabinet — Photon.Directory";
+    try {
+      cleanup = Games.mounts[id](stage, Games) || null;
+    } catch (e) {
+      stage.innerHTML = '<div class="err">This game threw while starting: ' + PH.esc(e.message) +
+        ". The rest of the cabinet still works.</div>";
+    }
+    scores();
+  }
+
+  function scores() {
+    var body = PH.qs("#score-rows");
+    var any = false;
+    body.innerHTML = Games.list.map(function (g) {
+      var s = Games.best(g.id);
+      if (s) any = true;
+      var cell = function (v) { return v ? PH.esc(v) : '<span class="faint">—</span>'; };
+      var best = s ? (g.id === "mines" ? cell(s.ms && (s.ms + " s")) :
+        g.id === "maze" ? cell(s.low && (s.low + " steps")) :
+        g.id === "lights" ? cell(s.low && (s.low + " presses")) :
+        g.id === "words" ? cell(s.high && (s.high + " wpm")) :
+        g.id === "pong" ? cell(s.high && (s.high + " rally")) : cell(s.high)) : cell(0);
+      return "<tr><td>" + PH.esc(g.name) + "</td><td>" + best + "</td><td>" +
+        cell(s && s.tries) + "</td><td>" + (s && s.at ? PH.stamp(s.at) : '<span class="faint">never</span>') + "</td></tr>";
+    }).join("");
+    PH.qs("#score-note").textContent = PH.store.available
+      ? "Keys are photon.score.* in this origin's localStorage. They will be there tomorrow, and gone if you clear site data."
+      : "localStorage is not available from this origin, so scores will not survive a reload. Everything else still plays.";
+    PH.on(PH.qs("#wipe-scores"), "click", function () {
+      if (!any) { PH.qs("#score-note").textContent = "There is nothing on the board to wipe."; return; }
+      if (!window.confirm("Erase every score in this browser?")) return;
+      Games.list.forEach(function (g) { PH.store.del(Games.scoreKey(g.id)); });
+      scores();
+      shelf();
+      if (current) { var c = current; current = null; play(c); }
+    });
+  }
+
+  shelf();
+  play((location.hash || "#snake").replace(/^#\/?/, "") || "snake");
+  window.addEventListener("hashchange", function () {
+    play((location.hash || "#snake").replace(/^#\/?/, "") || "snake");
+    PH.qs("#stage").scrollIntoView ? PH.qs("#stage").scrollIntoView({ block: "start" }) : null;
+  });
+})();
+</script>
+</body>
+</html>

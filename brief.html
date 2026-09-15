@@ -3,122 +3,336 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Design brief — Longwave Press site</title>
-<meta name="description" content="The working design brief for the Longwave Press site: tone, colour, type, spacing rules and the two drawings still to be made.">
+<title>Design brief — Photon.Directory</title>
+<meta name="description" content="The working brief for the hub: tone, the exact colour table, type sizes, the spacing rhythm, what is allowed to move, the eight drawings still owed, and how the site is tested.">
+<meta name="theme-color" content="#0a0d16">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%230a0d16'/%3E%3Crect x='3.5' y='3.5' width='25' height='25' fill='none' stroke='%23f2c14e' stroke-width='3'/%3E%3Crect x='9' y='10' width='14' height='2.5' fill='%23e8e3d9'/%3E%3Crect x='9' y='15' width='14' height='2.5' fill='%238fb7f0'/%3E%3Crect x='9' y='20' width='8' height='2.5' fill='%23c2303f'/%3E%3C/svg%3E">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 <header class="top">
   <div class="wrap">
-    <a class="logo" href="index.html">LONGWAVE<span>.</span>PRESS</a>
-    <span class="tag">design brief &middot; working document &middot; rev. 3</span>
+    <a class="logo" href="index.html">Photon<span>.</span>Directory</a>
+    <span class="tag">design brief &middot; working document &middot; rev. 6</span>
   </div>
 </header>
 
 <nav>
   <div class="wrap">
-    <a class="btn" href="index.html">&larr; Back to site</a>
+    <a class="btn" href="index.html">&larr; Back to the hub</a>
     <a class="btn" href="#tone">Tone</a>
     <a class="btn" href="#colour">Colour</a>
     <a class="btn" href="#type">Type</a>
     <a class="btn" href="#space">Space</a>
+    <a class="btn" href="#motion">Motion</a>
     <a class="btn hot" href="#draw">Drawings to make</a>
   </div>
 </nav>
 
+<div class="bar">
+  <div class="wrap">
+    <span class="lbl">BRIEF</span>
+    <marquee behavior="scroll" scrolldelay="80" loop="0">
+      rev. 6 — this is the same page that used to describe a text-first zine studio, kept because the rules survived &middot; eight drawings are still owed &middot; the numbers below are the numbers in style.css, not a description of them &middot;
+    </marquee>
+  </div>
+</div>
+
 <main class="wrap">
 
   <section class="loose">
-    <p class="kicker">Rev. 3 &middot; still arguable</p>
-    <h1 contenteditable="true"><span class="mark">DIT.EDIT</span>Design brief</h1>
+    <p class="kicker">Rev. 6 &middot; still arguable</p>
+    <h1>Design brief for a directory of offline sites</h1>
     <div class="indent">
-      <p class="lead" contenteditable="true"><span class="mark">DIT.EDIT</span>The site should feel like a shop notice board that someone keeps tidy, not a product page. Dark room, lamp on, blue paper, red pin. Everything you can click is ringed in yellow so there is never a guessing game.</p>
+      <p class="lead">
+        The hub should read like a notice board somebody keeps tidy: dark room, lamp on, blue
+        paper, red pin. Everything you can click is ringed in yellow so there is never a guessing
+        game, and everything that is not clickable stays quiet.
+      </p>
+      <p style="max-width:58ch">
+        It is a directory, so the listing is the design. Pages are built out of rows, tables and
+        notes rather than cards, and the only ornament a page is allowed is a drawing it is still
+        waiting for.
+      </p>
     </div>
   </section>
 
   <hr class="rule">
 
   <section id="tone">
-    <h2 contenteditable="true"><span class="mark">DIT.EDIT</span>Tone</h2>
+    <p class="kicker">01</p>
+    <h2>Tone</h2>
     <div class="indent">
-      <p contenteditable="true"><span class="mark">DIT.EDIT</span>Plain-spoken, first person plural, willing to admit failure. The homepage says outright that one project was abandoned, because a shop that has never lost a job is a shop that is lying. Sentences vary in length on purpose. Some are long and wander through the reasoning. Some don't.</p>
-      <p contenteditable="true"><span class="mark">DIT.EDIT</span>Nothing on the page is filler. Every name, price and date is a real decision that can be swapped for yours by clicking the text.</p>
+      <p>
+        Plain-spoken, first person singular or plural, willing to admit what a page cannot do.
+        The media player has a section called “three things this player will not do”. The hub says
+        outright that the drawings are missing rather than shipping a grey rectangle and hoping.
+        Sentences vary in length on purpose. Some are long and wander through the reasoning. Some don't.
+      </p>
+      <p>
+        No filler. Every byte count, file name, date and codec claim is a real number that can be
+        checked against the folder, and <code>tools/check.py</code> fails the build if the manifest
+        and the files disagree.
+      </p>
+      <p>
+        Text is left-aligned, always, and pushed off the page edge by an indent. Nothing is centred
+        except the column itself.
+      </p>
     </div>
   </section>
 
   <section id="colour">
-    <h2 contenteditable="true"><span class="mark">DIT.EDIT</span>Colour</h2>
+    <p class="kicker">02</p>
+    <h2>Colour</h2>
     <div class="indent">
       <table>
-        <tr><th style="width:150px">Role</th><th style="width:110px">Value</th><th>Where</th></tr>
-        <tr><td>Page ground</td><td>#0a0d16</td><td>Near-black with blue in it, not grey</td></tr>
-        <tr><td>Panel</td><td>#0e1422</td><td>Quote box, tables, drawing slots</td></tr>
-        <tr><td>Deep blue</td><td>#16233d</td><td>Nav bar, table headers, rules</td></tr>
-        <tr><td>Deep red</td><td>#7d1220</td><td>Button hover, the pin, the left edge of notes</td></tr>
-        <tr><td>Red lit</td><td>#c2303f</td><td>Kickers and the dot in the logo only</td></tr>
-        <tr><td>Yellow</td><td>#f2c14e</td><td>Button rings, headings, edit markers. Nothing else.</td></tr>
-        <tr><td>Text</td><td>#e8e3d9</td><td>Warm off-white on near-black &mdash; high contrast, not glare</td></tr>
+        <tr><th style="width:130px">Role</th><th style="width:110px">Value</th><th>Where</th></tr>
+        <tr><td>Page ground</td><td><code>#0a0d16</code></td><td>Near-black with blue in it, not grey. Body background, footer.</td></tr>
+        <tr><td>Raised</td><td><code>#0c1120</code></td><td>The index rows, drawing slots, inputs, code chips</td></tr>
+        <tr><td>Panel</td><td><code>#0e1422</code></td><td>Quote boxes, tables, the info blocks</td></tr>
+        <tr><td>Deep blue</td><td><code>#16233d</code></td><td>Nav bar, table headers, rules, covered squares in Minesweeper</td></tr>
+        <tr><td>Blue</td><td><code>#2f5fa8</code></td><td>Links inside dark surfaces, the buffered bar, Pong's score digits</td></tr>
+        <tr><td>Link</td><td><code>#8fb7f0</code></td><td>Every ordinary link. Turns yellow on hover, like the rest.</td></tr>
+        <tr><td>Deep red</td><td><code>#7d1220</code></td><td>Button hover, the left edge of notes, the 32-tile in 2048</td></tr>
+        <tr><td>Red lit</td><td><code>#c2303f</code></td><td>Kickers, the dot in the logo, a mine, the food in Snake</td></tr>
+        <tr><td>Yellow</td><td><code>#f2c14e</code></td><td>Button and focus rings, section heads, edit markers, the ball, the player. Nothing else.</td></tr>
+        <tr><td>Warm ink</td><td><code>#e8e3d9</code></td><td>Body text on near-black: high contrast, not glare</td></tr>
+        <tr><td>Dim</td><td><code>#9aa3b4</code> / <code>#6c788f</code></td><td>Asides, meta, sizes. Two steps only.</td></tr>
+        <tr><td>OK green</td><td><code>#4c9a6a</code></td><td>Status dots and nothing else — it must be rare to mean “fine”</td></tr>
       </table>
-      <p style="margin-top:14px" contenteditable="true"><span class="mark">DIT.EDIT</span>No gradients on buttons, no glass, no shadows. Flat fills and hard 2px borders.</p>
+      <p style="margin-top:14px">
+        No gradients on buttons, no glass, no frosted anything, no drop shadow except the one
+        under the header when it sticks. Flat fills and hard 2px borders. Contrast is checked
+        against the ground it actually sits on: warm ink on <code>#0a0d16</code> is
+        <b>13.1:1</b>, yellow on the same ground is <b>10.6:1</b>, dim asides are the only thing
+        below 7:1 and none of them are load-bearing.
+      </p>
+      <p class="row">
+        <span class="badge"><b>#0a0d16</b> ground</span>
+        <span class="badge"><b>#16233d</b> deep blue</span>
+        <span class="badge"><b>#7d1220</b> deep red</span>
+        <span class="badge"><b>#f2c14e</b> yellow</span>
+        <span class="badge"><b>#e8e3d9</b> ink</span>
+      </p>
     </div>
   </section>
 
   <section id="type">
-    <h2 contenteditable="true"><span class="mark">DIT.EDIT</span>Type</h2>
+    <p class="kicker">03</p>
+    <h2>Type</h2>
     <div class="indent">
-      <p contenteditable="true"><span class="mark">DIT.EDIT</span>Two families, both installed on every machine since forever: Georgia for headings, Courier New for body and interface. Serif over monospace is the oldest pairing on the web and it still reads. Hierarchy is strict: 38px page title, 24px yellow section head, 17px item head, 16px body, 13px asides. Nothing in between, ever.</p>
-      <p contenteditable="true"><span class="mark">DIT.EDIT</span>Body copy is capped at about 62 characters per line and sits left, indented away from the page edge rather than pinned to it.</p>
+      <p>
+        Two families, both installed on every machine since forever: <b>Georgia</b> for the logo,
+        headings and the numbers in a HUD; <b>Courier New</b> for body copy and every piece of
+        interface. Serif over monospace is the oldest pairing on the web and it still reads at
+        16px on a bad screen, which is the screen this hub is for. No webfonts, because a hub
+        that needs a CDN to look like itself is not offline.
+      </p>
+      <p>
+        Hierarchy is strict and there is nothing in between:
+        <b>38</b> page title, <b>24</b> section head in yellow, <b>17</b> item head, <b>16</b> body,
+        <b>14</b> table and button text, <b>13</b> asides, <b>12</b> kickers with 3px tracking,
+        <b>11</b> sizes and micro-labels. A component that needs a new size needs a new rule in
+        this table first.
+      </p>
+      <p>
+        Body copy is capped at 62ch (58ch in a narrow column) and sits left. Line-height is 1.65
+        everywhere, including tables, because cramped tables are the classic way an old-web page
+        reads as a spreadsheet nobody maintains.
+      </p>
     </div>
   </section>
 
   <section id="space">
-    <h2 contenteditable="true"><span class="mark">DIT.EDIT</span>Space and alignment</h2>
+    <p class="kicker">04</p>
+    <h2>Space and alignment</h2>
     <div class="indent">
-      <p contenteditable="true"><span class="mark">DIT.EDIT</span>The column is 860px and centred; the text inside it is not. Sections use three different gaps &mdash; 26px, 54px and 96px &mdash; chosen by how much of a breath the section needs, so the rhythm is uneven on purpose. Indents step in at 26px and 58px. Corners are 2px. Everything else is square.</p>
-      <p contenteditable="true"><span class="mark">DIT.EDIT</span>The only motion on the site is the scrolling notice strip under the nav, because a notice board really does change. No scroll reveals, no hover choreography.</p>
+      <p>
+        The column is <b>860px</b> and centred; the text inside it is not. Sections use three gaps
+        — <b>26px</b> tight, <b>54px</b> normal, <b>96px</b> loose — chosen by how much of a breath
+        the section needs, so the rhythm is uneven on purpose and you can feel where a chapter ends.
+        Indents step in at <b>26px</b> and <b>58px</b>. Corners are <b>2px</b>, on everything that has
+        a corner. Everything else is square.
+      </p>
+      <p>
+        Gaps between interactive things are 8–14px, never 4, and there is 28px of air on the sides
+        of the column (16px under 640px) so a ring around a button never touches its neighbour.
+      </p>
+      <table>
+        <tr><th style="width:170px">Token</th><th style="width:90px">Value</th><th>Used for</th></tr>
+        <tr><td>column</td><td>860px</td><td>every page, including the games and the player</td></tr>
+        <tr><td>pad-x</td><td>28 / 16px</td><td>side gutters</td></tr>
+        <tr><td>row pad</td><td>14px 16px</td><td>a directory row, and only directory rows</td></tr>
+        <tr><td>stack gap</td><td>12px</td><td>inside a panel</td></tr>
+        <tr><td>rule</td><td>2px</td><td>every border, including a focus ring</td></tr>
+        <tr><td>hairline</td><td>1px</td><td>table cells, between rows — never as decoration</td></tr>
+      </table>
+    </div>
+  </section>
+
+  <section id="motion">
+    <p class="kicker">05</p>
+    <h2>What is allowed to move</h2>
+    <div class="indent">
+      <p>
+        Three things, and each one because it is doing a job:
+      </p>
+      <ul>
+        <li><b>The notice strip</b> scrolls, because a notice board really does change. It has a
+          <button type="button" class="btn" style="padding:1px 8px">stop the strip</button>
+          button on the homepage, because a scrolling strip is also the thing people most like to stop.</li>
+        <li><b>A directory prints.</b> When the index, a search result set or the game shelf is put on
+          the screen, the rows come in top to bottom at 55ms each — that is the “listing” a lookup
+          actually is. It runs once, on paint. It is never attached to scrolling.</li>
+        <li><b>Game state.</b> A ball moves, a flood fill opens, a lamp flips. Nothing eases.</li>
+      </ul>
+      <p>
+        Everything else is static: no scroll reveals, no hover choreography, no parallax, no
+        skeletons, no spinners. Under
+        <code>prefers-reduced-motion: reduce</code> the print collapses to one paint and the strip
+        still scrolls, because a marquee is content, not decoration — and you can stop it.
+      </p>
+    </div>
+  </section>
+
+  <section id="refused">
+    <p class="kicker">06</p>
+    <h2>Refused on purpose</h2>
+    <div class="indent">
+      <div class="cols">
+        <div>
+          <table>
+            <tr><th>Refused</th><th>Because</th></tr>
+            <tr><td>Gradient buttons</td><td>A ring in one yellow already says “press me”.</td></tr>
+            <tr><td>Glass and blur</td><td>Text on a blurred background is how a page starts a accessibility lawsuit.</td></tr>
+            <tr><td>Stock photography</td><td>Nothing in the hub is a person on a phone in an office, and there is no image binary in the folder to fake it with.</td></tr>
+            <tr><td>Card grids, four across</td><td>The unit here is a row. Six identical cards would be a template with the serial numbers filed off.</td></tr>
+            <tr><td>Three-tier pricing</td><td>The hub has no price.</td></tr>
+            <tr><td>Testimonials</td><td>One field note, in its own box, on the front page. Not three in a row.</td></tr>
+            <tr><td>Newsletter box</td><td>There is nothing to subscribe to and no service to send it.</td></tr>
+            <tr><td>Cookie banner</td><td>No cookies, so no banner to refuse. <code>tools/check.py</code> fails the build if <code>document.cookie</code>, a beacon or an analytics script appears anywhere in the folder.</td></tr>
+            <tr><td>Icon packs</td><td>Glyphs are <kbd>&uarr;</kbd> arrows and box-drawing characters, and the logo is text with a red bar on it.</td></tr>
+            <tr><td>Scroll-triggered animation</td><td>See 05. A listing prints; a section does not fade up at you.</td></tr>
+          </table>
+        </div>
+        <div>
+          <div class="note">
+            <h3>The rule behind the list</h3>
+            <p style="margin-bottom:0">
+              A page is allowed exactly as much personality as it needs to tell you what it is.
+              Which is why the hub has a marquee, an honest visitor dial, a webring made of its own
+              pages, and no illustrations it cannot draw itself.
+            </p>
+          </div>
+          <div class="box mt16">
+            <h3 style="margin-bottom:6px">Old web, kept honestly</h3>
+            <p class="small mb0" style="margin-bottom:0">
+              Flat file names, relative links, tables for tabular data, a <code>&lt;marquee&gt;</code>
+              that can be switched off, and a <code>404.html</code> that hands you the index instead of
+              an apology. Nothing ironic about it: those constraints are why the hub is 310 KB of text and
+              one 17 MB game, and why both numbers are printed in the folder listing instead of guessed.
+            </p>
+          </div>
+        </div>
+      </div>
     </div>
   </section>
 
   <hr class="rule">
 
   <section id="draw">
-    <p class="kicker">Not yet made</p>
-    <h2 contenteditable="true"><span class="mark">DIT.EDIT</span>Drawings to make</h2>
+    <p class="kicker">Not yet made &middot; eight slots</p>
+    <h2>Drawings to make</h2>
     <div class="indent">
-      <div class="draw" style="margin-bottom:22px">
-        <b>IMAGE 1 &mdash; home, under the opening</b> <span class="size">(800 &times; 420)</span>
-        <p style="margin:8px 0 0">Ink line-work, no shading. The long desk from above: scuffed wood, two mismatched mugs, stack of stapled zines with the top one open, a ruler, a stub pencil, a beige CRT pushed half out of the right edge. Coffee ring lower left. Deliberately off-centre.</p>
-      </div>
-      <div class="draw" style="margin-bottom:22px;margin-left:34px">
-        <b>IMAGE 2 &mdash; home, beside the process table</b> <span class="size">(360 &times; 520)</span>
-        <p style="margin:8px 0 0">Pencil wireframe pinned crooked to corkboard with one red pin. Handwritten labels: "words", "picture here?", "price list". One box crossed out. A thumbprint smudge in the corner.</p>
-      </div>
-      <div class="draw">
-        <b>IMAGE 3 &mdash; logo mark, optional</b> <span class="size">(square, 200 &times; 200)</span>
-        <p style="margin:8px 0 0">A long radio wave drawn as one continuous hand-inked line crossing a rectangle of paper, with the line thickening where the pen pressed. Red dot where it exits the frame.</p>
-      </div>
-      <p style="margin-top:20px" contenteditable="true"><span class="mark">DIT.EDIT</span>Scan at 600dpi, drop the files in as PNGs, replace each dashed slot with an img tag and paste the alt text written under the slot on the homepage.</p>
+      <p class="small" style="max-width:58ch">
+        Each of these is a live <code>.draw</code> box carrying a <code>data-art</code> name, on the page
+        named beside it. Write a PNG with that exact name into <code>img/</code> and the box turns into the
+        drawing on its own — no HTML edit, no rebuild. The Sketch Pad exports at these exact sizes and
+        already uses these exact file names.
+      </p>
+      <table>
+        <tr><th style="width:150px">Slot</th><th style="width:120px">File</th><th style="width:90px">Pixels</th><th>On</th></tr>
+        <tr><td>1 · the drawer</td><td><code>img/drawer.png</code></td><td>800 × 420</td><td><a href="index.html">index</a> — the hub as a card catalogue, lamp lit, one red pin</td></tr>
+        <tr><td>2 · the room</td><td><code>img/room.png</code></td><td>360 × 520</td><td><a href="index.html">index</a> — dark room, one lamp, a CRT showing seven lines</td></tr>
+        <tr><td>3 · the cabinet</td><td><code>img/cabinet.png</code></td><td>360 × 520</td><td><a href="games.html">games</a> — a cabinet as a piece of furniture, cables on the shelf</td></tr>
+        <tr><td>4 · the deck</td><td><code>img/player.png</code></td><td>560 × 300</td><td><a href="player.html">player</a> — the player window drawn as an object, handle two thirds along</td></tr>
+        <tr><td>5 · the block</td><td><code>img/eagler.png</code></td><td>360 × 360</td><td><a href="eagler.html">eaglercraft</a> — one cube in two-point perspective, 1.8 underneath</td></tr>
+        <tr><td>6 · the pad</td><td><code>img/notepad.png</code></td><td>360 × 520</td><td><a href="notepad.html">notepad</a> — paper with a red pin, corner curling, no readable words</td></tr>
+        <tr><td>7 · the hand</td><td><code>img/sketch.png</code></td><td>420 × 420</td><td><a href="sketch.html">sketch pad</a> — a hand and a pen caught mid-stroke, ink pooled at a corner</td></tr>
+        <tr><td>8 · the mark</td><td><code>img/mark.png</code></td><td>200 × 200</td><td>optional — one continuous wave across a rectangle of paper, red dot where it exits</td></tr>
+      </table>
+      <p class="small mt16" style="max-width:58ch">
+        Ink line-work, no shading, no centring, one red element per drawing. Scan at 600dpi if you do
+        it on paper; the palette above is what the drawings will sit next to, so a warm black or a
+        blue-black pen is right and a pure #000 looks like a screenshot.
+      </p>
+      <p class="row">
+        <a class="btn hot" href="sketch.html">Open the sketch pad</a>
+        <a class="btn" href="index.html">See the boxes on the pages</a>
+      </p>
     </div>
   </section>
 
-  <section>
+  <section id="tested">
+    <p class="kicker">07</p>
+    <h2>How it is checked</h2>
+    <div class="indent">
+      <table>
+        <tr><th style="width:220px">Command</th><th>What it proves</th></tr>
+        <tr><td><code>node tools/test-logic.js</code></td>
+          <td>293 assertions over the deciding logic: snake growth and tail rules, the minesweeper flood and win conditions, all four 2048 directions, maze connectivity on nine board sizes, Lights Out solvability, Pong physics, and the container prober against hand-built Matroska, MP4 and AVI bytes plus 400 random buffers.</td></tr>
+        <tr><td><code>node tools/test-dom.js</code></td>
+          <td>348 assertions over nine pages in a headless DOM: nav consistency, no console errors, the directory prints and packs its caret away, pins survive a reload, all seven games mount and tear down, the player wires up its deck, the notes autosave what was typed.</td></tr>
+        <tr><td><code>python3 tools/check.py</code></td>
+          <td>The folder agrees with itself: every link resolves, every manifest byte count is current, no placeholder text survives, no external resource is referenced, tags balance, every <code>img</code> has real alt text, the Eaglercraft file is intact.</td></tr>
+      </table>
+      <p class="small mt16" style="max-width:58ch">
+        Run all three before pushing, and <code>tools/sizes.py</code> first: the front page prints a
+              byte count for every file in the folder, and that is the table that goes stale. They are the reason the hub can say “400 random buffers”
+        without hoping.
+      </p>
+    </div>
+  </section>
+
+  <section id="edit">
     <div class="note">
-      <h3 contenteditable="true"><span class="mark">DIT.EDIT</span>How editing works</h3>
-      <p style="margin-bottom:0" contenteditable="true"><span class="mark">DIT.EDIT</span>Any text carrying the yellow DIT.EDIT tag can be clicked and typed over. Nothing structural is editable, so you cannot break the layout by writing too much or too little. Delete the tag itself once you're happy with the words.</p>
+      <h3>How editing works</h3>
+      <p style="margin-bottom:0">
+        This page and the copy on every other page are ordinary HTML: change the text, keep the tags.
+        Anything structural is in <code>style.css</code> at the top, and the components below it are
+        additive, so a new page can use <code>.wrap</code>, <code>.btn</code>, <code>.dir</code>,
+        <code>.draw</code>, <code>.box</code> and <code>.note</code> without touching the rules above.
+        A new site in the hub is one entry in <code>js/index-data.js</code> and one file next to
+        <code>index.html</code>; the index, the search and the webring pick it up on their own.
+      </p>
     </div>
     <p style="margin-top:22px">
-      <a class="btn hot" href="index.html">Back to the site</a>
+      <a class="btn hot" href="index.html">Back to the hub</a>
     </p>
   </section>
+
+  <div class="ring mt24" id="ring"></div>
 
 </main>
 
 <footer>
   <div class="wrap">
-    <p style="margin:0">Longwave Press &mdash; design brief rev. 3, kept in the cabinet that sticks. <a href="index.html">Home</a></p>
+    <p style="margin:0">Photon.Directory — design brief rev. 6. Rev. 3 described a zine studio; the
+      rules survived the change of subject, so the document did too. <a href="index.html">Home</a></p>
   </div>
 </footer>
 
+<script src="js/index-data.js"></script>
+<script src="js/directory.js"></script>
+<script>
+(function () {
+  "use strict";
+  PH.markNav();
+  PH.mountRing(PH.qs("#ring"));
+  var strip = PH.qs("marquee");
+  PH.on(PH.qs("#draw"), "mouseenter", function () { if (strip && strip.stop) strip.stop(); });
+})();
+</script>
 </body>
 </html>

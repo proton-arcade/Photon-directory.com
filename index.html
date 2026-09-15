@@ -3,8 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Photon.Directory</title>
-<meta name="description" content="Longwave Press builds text-first websites, zines and reading tools for people who would rather read than scroll.">
+<title>Photon.Directory — six offline sites that live in one folder</title>
+<meta name="description" content="Six offline sites in one folder: a game cabinet, a media player that reads .mkv and .mp4, Eaglercraft, a notepad, a sketch pad, and a search box over the whole index.">
+<meta name="theme-color" content="#0a0d16">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%230a0d16'/%3E%3Crect x='3.5' y='3.5' width='25' height='25' fill='none' stroke='%23f2c14e' stroke-width='3'/%3E%3Crect x='9' y='10' width='14' height='2.5' fill='%23e8e3d9'/%3E%3Crect x='9' y='15' width='14' height='2.5' fill='%238fb7f0'/%3E%3Crect x='9' y='20' width='8' height='2.5' fill='%23c2303f'/%3E%3C/svg%3E">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -19,16 +21,24 @@
 <nav>
   <div class="wrap">
     <a class="btn" href="index.html">Home</a>
-    <a class="btn" href="#work">The Work</a>
-    <a class="btn" href="#shop">Shop Notes</a>
-    <a class="btn" href="#letters">Letters</a>
+    <a class="btn" href="games.html">Game Cabinet</a>
+    <a class="btn" href="player.html">Media Player</a>
+    <a class="btn" href="eagler.html">Eaglercraft</a>
+    <a class="btn" href="notepad.html">Notepad</a>
+    <a class="btn" href="sketch.html">Sketch Pad</a>
+    <a class="btn" href="search.html">Search</a>
     <a class="btn hot" href="brief.html">Design Brief &rarr;</a>
   </div>
 </nav>
 
 <div class="bar">
   <div class="wrap">
-    <marquee behavior="scroll" scrolldelay="70">temp.temp.temp.temp.temp.temp.temp.temp.temp</marquee>
+    <span class="lbl">NOTICE</span>
+    <marquee id="bar-strip" behavior="scroll" scrolldelay="70" loop="0">
+      index rev. 6 &middot; six sites, no network required &middot; the media player reads .mkv, .mp4, .webm, .mov, .mp3, .flac, .wav &middot; EaglercraftX 1.8 is 17.2 MB and boots in about four seconds &middot; everything clickable wears a yellow ring &middot; drawings are owed, see the brief &middot;
+    </marquee>
+    <button type="button" class="btn" id="bar-stop" aria-pressed="false">stop the strip</button>
+    <span class="counter" id="visits" title="Visits recorded in this browser, on this machine.">—</span>
   </div>
 </div>
 
@@ -36,127 +46,352 @@
 
   <!-- OPENING -->
   <section class="loose">
-    <p class="kicker">temp.temp
-    <h1>
-</span>header.temp</h1>
+    <p class="kicker">Indexed 14 Sep 2025 &middot; rev. 6 &middot; still arguable</p>
+    <h1>Six sites that live in this folder and never call anybody.</h1>
     <div class="indent">
       <p class="lead">
-</span>paragraph.temp</p>
+        This is the index card drawer for a small collection of downloaded sites: games,
+        a media player, Minecraft, two tools and a search box. Every one of them is a file
+        or two, opened relative to where they sit. Pull the folder off the network and the
+        hub keeps working, because it was never asking for anything.
+      </p>
       <p style="max-width:54ch">
-</span>paragraph.temp</p>
-      <p>
- 
-    </div>
-  </section>
-
-  <hr class="rule">
-
-  <!-- DRAWN IMAGE 1 -->
-  <section>
-    <div class="cols">
-      <div style="flex:1 1 360px">
-        <div class="draw">
-          <b>DRAW THIS &mdash; IMAGE 1</b> <span class="size">(wide, roughly 800 &times; 420)</span>
-          <p style="margin:8px 0 0">The long desk from above, drawn in ink line-work, no shading: a scuffed wooden surface, two mismatched mugs, a stack of stapled zines with the top one open, a ruler, a pencil worn to a stub, and a beige CRT monitor pushed to the right edge so it is half out of frame. Nothing centered. A coffee ring sits on the lower left of the paper.</p>
-          <p style="margin:8px 0 0" class="size">ALT TEXT TO USE: "Ink drawing of the studio desk: open zine, two mugs, a stub pencil and a beige CRT pushed off the right edge."</p>
-        </div>
-      </div>
-      <div style="flex:1 1 220px">
-        <h2 contenteditable="true"><span class="mark">DIT.EDIT</span>What the desk looks like</h2>
-        <p contenteditable="true"><span class="mark">DIT.EDIT</span>The monitor is a 1997 Trinitron we keep for contrast checks. It is honest about bad grey text in a way no laptop screen has ever been.</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- WORK -->
-  <section id="work" class="loose">
-    <p class="kicker">The Work</p>
-    <h2 contenteditable="true"><span class="mark">DIT.EDIT</span>Four things we finished and one we didn't</h2>
-    <div class="indent">
-      <h3 contenteditable="true"><span class="mark">DIT.EDIT</span>01 &mdash; Redbird Feed Store, catalog + site</h3>
-      <p contenteditable="true"><span class="mark">DIT.EDIT</span>Forty years of seed inventory lived in a three-ring binder behind the register. We typed it out, priced it, and put it on one long page that a farmer can read on a cracked phone in a truck with one bar of signal. Sixty-one kilobytes. Orders went up; nobody mentioned the website.</p>
-
-      <h3 style="margin-top:26px" contenteditable="true"><span class="mark">DIT.EDIT</span>02 &mdash; The Thursday Reading Room</h3>
-      <p class="indent" contenteditable="true"><span class="mark">DIT.EDIT</span>A single page listing what is being read aloud, who is reading it, and where to sit. It updates by hand every Wednesday night. We were asked twice to add a calendar widget and said no twice.</p>
-
-      <h3 style="margin-top:26px" contenteditable="true"><span class="mark">DIT.EDIT</span>03 &mdash; Marisol's archive of union pamphlets</h3>
-      <p contenteditable="true"><span class="mark">DIT.EDIT</span>Eleven hundred scans, each one transcribed so the text can be searched and quoted. The hardest part was not the code. It was deciding how to spell names that three different typesetters spelled three different ways in 1974.</p>
-
-      <div class="note" style="margin-top:30px">
-        <h3 contenteditable="true"><span class="mark">DIT.EDIT</span>04 &mdash; The one we didn't finish</h3>
-        <p style="margin-bottom:0" contenteditable="true"><span class="mark">DIT.EDIT</span>A reading app with margins you could write in. We got eight months deep before admitting the thing we loved about margins was the paper. We refunded half and kept the notes. They are in the cabinet that sticks.</p>
-      </div>
-    </div>
-  </section>
-
-  <hr class="rule">
-
-  <!-- DRAWN IMAGE 2 + shop notes -->
-  <section id="shop">
-    <p class="kicker">Shop Notes</p>
-    <h2 contenteditable="true"><span class="mark">DIT.EDIT</span>How a job actually goes</h2>
-    <div class="cols">
-      <div style="flex:2 1 380px">
-        <table>
-          <tr><th style="width:120px">Step</th><th>What happens</th></tr>
-          <tr><td>Call</td><td contenteditable="true"><span class="mark">DIT.EDIT</span>Thirty minutes, no slides. You talk, we take notes on paper.</td></tr>
-          <tr><td>Paper</td><td contenteditable="true"><span class="mark">DIT.EDIT</span>We mail you pencil layouts. Actual mail, with a stamp on it.</td></tr>
-          <tr><td>Build</td><td contenteditable="true"><span class="mark">DIT.EDIT</span>Two to six weeks. Hand-written HTML. You get the files.</td></tr>
-          <tr><td>After</td><td contenteditable="true"><span class="mark">DIT.EDIT</span>A year of small edits, free. After that, coffee rates.</td></tr>
-        </table>
-        <p style="margin-top:16px">
-          <a class="btn hot" href="#letters">Start with the call</a>
-        </p>
-      </div>
-      <div style="flex:1 1 240px">
-        <div class="draw">
-          <b>DRAW THIS &mdash; IMAGE 2</b> <span class="size">(tall, roughly 360 &times; 520)</span>
-          <p style="margin:8px 0 0">A pencil wireframe pinned to a corkboard with one red pin, drawn slightly crooked. Boxes labeled in handwriting: "words", "picture here?", "price list". A thumbprint smudge near the bottom corner and one box crossed out with two diagonal strokes.</p>
-          <p style="margin:8px 0 0" class="size">ALT TEXT TO USE: "Crooked pencil wireframe pinned to corkboard, one box crossed out, labels in handwriting."</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- PRICE, two options not three -->
-  <section class="tight" style="padding-left:40px">
-    <h2 contenteditable="true"><span class="mark">DIT.EDIT</span>What it costs</h2>
-    <p contenteditable="true"><span class="mark">DIT.EDIT</span>Small site, up to six pages: $2,400. Anything with an archive, a catalog or a thousand scans: starts at $6,000 and we'll tell you the real number after the paper stage. Zine printing is billed at cost plus the price of two lunches.</p>
-    <p contenteditable="true"><span class="mark">DIT.EDIT</span>If you run a library, a food pantry or a picket line, ask anyway. We keep two slots a year for that and they are usually the work we are proudest of.</p>
-  </section>
-
-  <hr class="rule">
-
-  <!-- ONE testimonial, not three -->
-  <section>
-    <div class="box" style="max-width:600px;margin-left:18px">
-      <p style="margin-bottom:8px" contenteditable="true"><span class="mark">DIT.EDIT</span>&ldquo;They asked what my customers were doing with their hands when they'd be looking at the site. Nobody had ever asked me that. Turns out the answer was: holding a goat.&rdquo;</p>
-      <p style="margin:0;color:#9aa3b4;font-size:13px" contenteditable="true"><span class="mark">DIT.EDIT</span>&mdash; Dale Prewitt, Redbird Feed Store</p>
-    </div>
-  </section>
-
-  <!-- LETTERS -->
-  <section id="letters" class="loose">
-    <p class="kicker">Letters</p>
-    <h2 contenteditable="true"><span class="mark">DIT.EDIT</span>Write to us</h2>
-    <div class="indent">
-      <p contenteditable="true"><span class="mark">DIT.EDIT</span>Email is best: <a href="mailto:desk@longwave.press">desk@longwave.press</a>. We read everything on Tuesday and Friday mornings and answer in full sentences. If you'd rather send paper, the box number is 4118, Austin TX 78704.</p>
-      <p contenteditable="true"><span class="mark">DIT.EDIT</span>There is no newsletter. There is a mailing list for the zine, and you join it by asking, which is the same as everything else here.</p>
-      <p>
-        <a class="btn hot" href="mailto:desk@longwave.press">Email the desk</a>
-        <a class="btn" href="brief.html">Read the design brief</a>
+        The listings below are printed, not decorated. A row is a name, what it is for,
+        how heavy it is, and a ringed button that opens it. Nothing here is a landing page
+        for itself.
+      </p>
+      <p class="small dim">
+        Kept by hand since the drawer was cut. The only thing on this site that moves is the
+        notice strip above and the index printing itself out &mdash; a board that never changes
+        is a decoration.
       </p>
     </div>
   </section>
+
+  <!-- DRAWN IMAGE 1 -->
+  <section>
+    <div class="draw" data-art="img/drawer.png" data-w="800"
+         data-alt="Ink drawing of a card-catalogue drawer pulled open under a desk lamp, index cards on edge, one flipped sideways with a red pin.">
+      <b>DRAW THIS &mdash; IMAGE 1</b> <span class="size">(wide, roughly 800 &times; 420)</span>
+      <p style="margin:8px 0 0">The card drawer of the hub, seen from the front-left at about 20&deg;, ink line-work, no shading. Wooden drawer pulled half out of a desk, brass pull in the middle. Inside: two rows of index cards standing on edge, one card flipped sideways at the right. A red pin through the top corner of the front card, casting nothing. The lamp beam ends on the third card from the left, so the left-hand cards are darker. One card is sticking out higher than the rest by 4mm. Do not centre anything.</p>
+      <p style="margin:8px 0 0" class="size">SAVE AS: <code>img/drawer.png</code> &mdash; the box turns into the drawing on its own once the file is there.</p>
+    </div>
+  </section>
+
+  <hr class="rule">
+
+  <!-- THE INDEX -->
+  <section id="index" class="loose">
+    <div class="spread">
+      <h2 style="margin-bottom:2px">The index</h2>
+      <span class="xs" id="dir-count">&nbsp;</span>
+    </div>
+    <div class="indent">
+      <p class="small dim" style="max-width:58ch">
+        Weight is the code a site ships with — its page plus every script it loads — not the
+        media you feed it. The cabinet is 94 KB and the player 109 KB of text, which is the
+        whole cost of them; the game on this hub that is not text is the one you have to wait for.
+      </p>
+    </div>
+
+    <div id="dir" class="dir" aria-live="polite">
+      <div class="dir-row"><span class="who"><span class="sub">Printing the index&hellip;</span></span></div>
+    </div>
+
+    <noscript>
+      <table>
+        <tr><th style="width:150px">Site</th><th>File</th></tr>
+        <tr><td>Game Cabinet</td><td><a href="games.html">games.html</a></td></tr>
+        <tr><td>Media Player</td><td><a href="player.html">player.html</a></td></tr>
+        <tr><td>EaglercraftX 1.8</td><td><a href="eagler.html">eagler.html</a></td></tr>
+        <tr><td>Notepad</td><td><a href="notepad.html">notepad.html</a></td></tr>
+        <tr><td>Sketch Pad</td><td><a href="sketch.html">sketch.html</a></td></tr>
+        <tr><td>Search</td><td><a href="search.html">search.html</a></td></tr>
+      </table>
+    </noscript>
+
+    <p class="dir-note" id="link-status">Links checked when the page loads, against the folder it is served from.</p>
+  </section>
+
+  <!-- PIN YOUR OWN -->
+  <section id="pins">
+    <p class="kicker">Your shelf</p>
+    <h2>Pin a site of your own to the index</h2>
+    <div class="indent">
+      <p class="small" style="max-width:58ch">
+        The hub is a directory, so it should accept a new entry. A pin is stored in this
+        browser only and appears in the listing above and in the search. It is a card, not a
+        proxy: the hub will not fetch, unpack or vouch for anything you point it at.
+      </p>
+      <form class="box" id="pin-form" autocomplete="off">
+        <table>
+          <tr>
+            <th style="width:110px">Name</th>
+            <td colspan="2"><input id="pin-title" name="title" maxlength="80" placeholder="Sudoku I keep losing at" style="width:100%"></td>
+          </tr>
+          <tr>
+            <th>Address</th>
+            <td colspan="2"><input id="pin-href" name="href" placeholder="sudoku.html &nbsp;or&nbsp; https://example.com/" style="width:100%"></td>
+          </tr>
+          <tr>
+            <th>One line</th>
+            <td><textarea id="pin-blurb" name="blurb" rows="2" maxlength="400" placeholder="What it is and why it is in the drawer." style="width:100%"></textarea></td>
+            <td style="width:180px">
+              <label for="pin-keys" class="xs">KEYWORDS FOR SEARCH</label>
+              <input id="pin-keys" name="keys" placeholder="sudoku puzzle numbers" style="width:100%">
+            </td>
+          </tr>
+        </table>
+        <p class="row" style="margin:12px 0 0">
+          <button type="submit" class="btn">Pin it to the index</button>
+          <button type="button" class="btn" id="pin-export">Export pins</button>
+          <button type="button" class="btn" id="pin-clear">Clear my shelf</button>
+        </p>
+        <p class="small" style="margin:10px 0 0"><label for="pin-import">Or bring a shelf in from a file:</label>
+          <input type="file" id="pin-import" accept=".json,application/json"></p>
+        <p class="small" id="pin-msg" role="status" aria-live="polite" style="margin:10px 0 0"></p>
+      </form>
+    </div>
+  </section>
+
+  <hr class="rule">
+
+  <!-- HOW IT STAYS OFFLINE -->
+  <section id="how">
+    <p class="kicker">House rules</p>
+    <h2>How a hub like this stays offline</h2>
+    <div class="cols mt16">
+      <div style="flex:2 1 380px">
+        <table>
+          <tr><th style="width:150px">Rule</th><th>What it costs and what it buys</th></tr>
+          <tr><td>No CDNs</td><td>EmulatorJS, React, a font service &mdash; all refused. Costs: no free speed. Buys: the hub works in a car with no signal.</td></tr>
+          <tr><td>Relative links</td><td>Every <code>href</code> is a file next to this one, so the folder can be renamed, moved or zipped without anything breaking.</td></tr>
+          <tr><td>Installed type</td><td>Georgia and Courier New, both on every machine since forever. Nothing is waited for.</td></tr>
+          <tr><td>No fetch at boot</td><td>The index is typed into <code>js/index-data.js</code>. A <code>file://</code> open is a second-class citizen on purpose, so we do not make it worse.</td></tr>
+          <tr><td>Local memory</td><td>Scores, notes and pins go to <code>localStorage</code>. Clear the site data and it is all gone, which is the point.</td></tr>
+          <tr><td>One motion each</td><td>The strip scrolls because a notice board changes. The index prints because a directory is looked up. Nothing else moves at you.</td></tr>
+        </table>
+        <p style="margin-top:16px">
+          <a class="btn hot" href="brief.html">Read the design brief</a>
+          <a class="btn" href="search.html">Search the index</a>
+        </p>
+      </div>
+      <div style="flex:1 1 240px">
+        <div class="box">
+          <h3 style="margin-bottom:6px">Counting honestly</h3>
+          <p class="small" style="margin-bottom:8px">The dial in the strip counts times this hub has been opened <em>in this browser</em>. Not a hit counter, not a total. A real number you could audit, or a row of zeros.</p>
+          <p class="small mb0" style="margin-bottom:0"><span class="badge"><b>0</b> trackers</span>
+            <span class="badge alt"><b>0</b> cookies</span></p>
+        </div>
+        <div class="draw mt16" data-art="img/room.png" data-w="360"
+             data-alt="Ink drawing of a desk in a dark room, one lamp, a CRT glowing with a list of lines on it, a mug and a stub pencil in the beam.">
+          <b>DRAW THIS &mdash; IMAGE 2</b> <span class="size">(tall, roughly 360 &times; 520)</span>
+          <p style="margin:8px 0 0">The room the hub lives in. Nearly black at the edges, one desk lamp on the right throwing a hard cone across the top half. A squat CRT on the left, screen showing seven lines of text with a block cursor on the last one. A mug, a stub pencil, a folded cloth. The cable from the monitor runs straight off the bottom edge of the paper: nothing behind it.</p>
+          <p style="margin:8px 0 0" class="size">SAVE AS: <code>img/room.png</code></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- IN THE BOX -->
+  <section id="box">
+    <p class="kicker">Manifest</p>
+    <h2>What is in the box</h2>
+    <div class="indent">
+      <p class="small dim" style="max-width:58ch">
+        The whole site, listed. Weights are read from the files as they stand; the checker in
+        <code>tools/check.py</code> refuses to let the table and the folder disagree.
+      </p>
+      <table>
+        <tr><th style="width:200px">Path</th><th>What it is</th><th style="width:110px">Weight</th></tr>
+        <tbody id="box-rows"></tbody>
+      </table>
+      <div class="indent2">
+        <p class="xs faint" id="box-foot" style="margin:8px 0 0">Reading the folder…</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FIELD NOTE -->
+  <section class="tight">
+    <div class="box" style="max-width:600px;margin-left:18px">
+      <p style="margin-bottom:8px">
+        One of the four sites in this drawer was not built for the drawer. The media player was
+        written so a folder of screen recordings could be watched on a laptop with a broken
+        Wi-Fi card. The directory came after, because the files started needing a cover sheet.
+      </p>
+      <p style="margin:0;color:#9aa3b4;font-size:13px">&mdash; the desk, Tuesday</p>
+    </div>
+  </section>
+
+  <div class="ring mt24" id="ring"></div>
 
 </main>
 
 <footer>
   <div class="wrap">
-    <p style="margin:0 0 6px" contenteditable="true"><span class="mark">DIT.EDIT</span>Longwave Press &middot; 4118 Austin TX 78704 &middot; desk@longwave.press</p>
-    <p style="margin:0">Hand-written HTML. No trackers, no cookies, nothing to consent to. <a href="index.html">Back to the top</a></p>
+    <p style="margin:0 0 6px">Photon.Directory &middot; hand-written HTML &middot; index rev. 6, printed 14 Sep 2025</p>
+    <p style="margin:0">No trackers, no cookies, nothing to consent to. If you are reading this on a bus with no signal, that worked.
+      <a href="index.html">Back to the top</a></p>
   </div>
 </footer>
 
+<script src="js/index-data.js"></script>
+<script src="js/directory.js"></script>
+<script>
+(function () {
+  "use strict";
+  var host = PH.qs("#dir");
+
+  PH.markNav();
+  PH.mountRing(PH.qs("#ring"));
+  PH.hydrateArt();
+
+  /* the strip: pause it if it is being a nuisance */
+  (function () {
+    var strip = PH.qs("#bar-strip"), btn = PH.qs("#bar-stop");
+    var stopped = false;
+    PH.on(btn, "click", function () {
+      stopped = !stopped;
+      try { if (stopped) { strip.stop(); } else { strip.start(); } } catch (e) {}
+      btn.textContent = stopped ? "start the strip" : "stop the strip";
+      btn.setAttribute("aria-pressed", stopped ? "true" : "false");
+    });
+  })();
+
+  /* the dial */
+  (function () {
+    var el = PH.qs("#visits");
+    if (!el) return;
+    var v = PH.visits();
+    el.innerHTML = 'times opened here <span class="odometer" id="odo"></span>';
+    PH.odometer(PH.qs("#odo"), v.count, 4);
+    el.title = "Times this hub has been opened in this browser: " + v.count +
+      ". First seen " + PH.stamp(v.first) + ", this visit " + PH.stamp(v.last) +
+      (PH.store.available ? "" : " — storage unavailable, so this visit is not remembered");
+  })();
+
+  /* the index, printed */
+  function renderDir() {
+    var sites = PH.ordered().concat(PH.pins());
+    PH.print(host, sites, {
+      empty: "The index has no rows at all. Something is wrong with js/index-data.js.",
+      allowDelete: true
+    })
+      .then(function (n) {
+        PH.qs("#dir-count").textContent = n + " row" + (n === 1 ? "" : "s") + " in the drawer";
+      });
+  }
+  renderDir();
+
+  /* links: check them against wherever we are being served from */
+  (function () {
+    var out = PH.qs("#link-status");
+    PH.checkLinks().then(function (res) {
+      var bad = res.filter(function (r) { return !r.ok; });
+      if (!res.every(function (r) { return r.file; })) return;
+      if (bad.length) {
+        out.innerHTML = '<span class="dot off"></span>' + bad.length + " of " + res.length +
+          " links did not answer just now: " + bad.map(function (b) { return "<code>" + PH.esc(b.file) + "</code>"; }).join(", ") +
+          ". The hub is probably being opened straight off the disk, or a file is missing.";
+      } else {
+        out.innerHTML = '<span class="dot ok"></span>All ' + res.length +
+          " index links answered in the folder this page is being served from. Checked " + new Date().toLocaleTimeString() + ".";
+      }
+    });
+  })();
+
+  /* manifest table */
+  (function () {
+    var rows = PH.qs("#box-rows");
+    var box = (typeof PHOTON_BOX !== "undefined") ? PHOTON_BOX : [];
+    var counted = 0, bytes = 0;
+    rows.innerHTML = box.map(function (f) {
+      /* a group row is a sub-heading inside the same table, not a file */
+      if (f.group) {
+        return '<tr><td colspan="3" class="xs dim">' + PH.esc(f.group).toUpperCase() + "</td></tr>";
+      }
+      counted++;
+      if (f.size) bytes += f.size;
+      var weight = f.size ? PH.fmtBytes(f.size) : '<span class="warn">not drawn</span>';
+      return "<tr><td><code>" + PH.esc(f.path) + "</code></td><td>" + PH.esc(f.what) +
+        (f.note ? ' <span class="xs faint">· ' + PH.esc(f.note) + "</span>" : "") +
+        '</td><td class="faint mono">' + weight + "</td></tr>";
+    }).join("");
+    var foot = PH.qs("#box-foot");
+    if (foot) {
+      foot.innerHTML = counted + " files, <b class=\"mono\">" + PH.fmtBytes(bytes) +
+        "</b> of it, plus the drawings still owed. Regenerated by <code>tools/sizes.py</code> " +
+        "from the folder itself — <code>tools/check.py</code> refuses a table that has fallen behind.";
+    }
+  })();
+
+  /* pins */
+  (function () {
+    var form = PH.qs("#pin-form"), msg = PH.qs("#pin-msg");
+    function say(t, kind) {
+      msg.innerHTML = (kind === "bad" ? '<span class="warn">' : "") + PH.esc(t) + (kind === "bad" ? "</span>" : "");
+    }
+    PH.on(form, "submit", function (ev) {
+      ev.preventDefault();
+      var res = PH.addPin({
+        title: PH.qs("#pin-title").value,
+        href: PH.qs("#pin-href").value,
+        blurb: PH.qs("#pin-blurb").value,
+        keys: PH.qs("#pin-keys").value
+      });
+      if (res.error) { say(res.error, "bad"); return; }
+      say("Pinned. The index is reprinting.", "ok");
+      form.reset();
+      renderDir();
+    });
+    PH.on(PH.qs("#pin-export"), "click", function () {
+      var list = PH.pins();
+      if (!list.length) { say("Nothing on the shelf yet to export.", "bad"); return; }
+      var blob = new Blob([JSON.stringify({ photonPins: 1, pins: list.map(function (p) {
+        return { title: p.title, href: p.file, blurb: p.blurb, keys: p.keys };
+      })}, null, 2)], { type: "application/json" });
+      var a = document.createElement("a");
+      a.href = URL.createObjectURL(blob);
+      a.download = "photon-pins.json";
+      document.body.appendChild(a); a.click();
+      setTimeout(function () { URL.revokeObjectURL(a.href); a.remove(); }, 400);
+      say(list.length + " pin" + (list.length === 1 ? "" : "s") + " written out as photon-pins.json.", "ok");
+    });
+    PH.on(PH.qs("#pin-import"), "change", function (ev) {
+      var f = ev.target.files && ev.target.files[0];
+      if (!f) return;
+      var r = new FileReader();
+      r.onload = function () {
+        try {
+          var data = JSON.parse(r.result);
+          var pins = Array.isArray(data.photonPins ? data.pins : data) ? (data.photonPins ? data.pins : data) : [];
+          var added = 0;
+          pins.forEach(function (p) {
+            if (p && p.title) { var res = PH.addPin(p); if (res.ok) added++; }
+          });
+          say(added ? added + " pin(s) read in." : "That file had no pins in it.", added ? "ok" : "bad");
+          renderDir();
+        } catch (e) { say("That is not a pin export I can read.", "bad"); }
+      };
+      r.readAsText(f);
+    });
+    PH.on(PH.qs("#pin-clear"), "click", function () {
+      if (!PH.pins().length) { say("The shelf is already empty.", "bad"); return; }
+      if (!window.confirm("Unpin everything on your shelf? This cannot be undone.")) return;
+      PH.store.del("photon.pins.v1");
+      say("Shelf cleared.", "ok");
+      renderDir();
+    });
+    PH.on(host, "click", function (ev) {
+      var b = ev.target.closest ? ev.target.closest(".del-pin") : null;
+      if (!b) return;
+      PH.dropPin(b.getAttribute("data-del"));
+      say("Unpinned.", "ok");
+      renderDir();
+    });
+  })();
+})();
+</script>
 </body>
 </html>

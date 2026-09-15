@@ -1,0 +1,359 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Notepad — Photon.Directory</title>
+<meta name="description" content="Plain notes that autosave in this browser. Word and character counts as you type, pinned notes on top, export to .txt, and no account anywhere.">
+<meta name="theme-color" content="#0a0d16">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%230a0d16'/%3E%3Crect x='3.5' y='3.5' width='25' height='25' fill='none' stroke='%23f2c14e' stroke-width='3'/%3E%3Crect x='9' y='10' width='14' height='2.5' fill='%23e8e3d9'/%3E%3Crect x='9' y='15' width='14' height='2.5' fill='%238fb7f0'/%3E%3Crect x='9' y='20' width='8' height='2.5' fill='%23c2303f'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <a class="logo" href="index.html">Photon<span>.</span>Directory</a>
+    <span class="tag">notepad &middot; autosaves here &middot; no account</span>
+  </div>
+</header>
+
+<nav>
+  <div class="wrap">
+    <a class="btn" href="index.html">Home</a>
+    <a class="btn" href="games.html">Game Cabinet</a>
+    <a class="btn" href="player.html">Media Player</a>
+    <a class="btn" href="eagler.html">Eaglercraft</a>
+    <a class="btn" href="notepad.html">Notepad</a>
+    <a class="btn" href="sketch.html">Sketch Pad</a>
+    <a class="btn" href="search.html">Search</a>
+    <a class="btn hot" href="brief.html">Design Brief &rarr;</a>
+  </div>
+</nav>
+
+<div class="bar">
+  <div class="wrap">
+    <span class="lbl">PAD</span>
+    <marquee behavior="scroll" scrolldelay="80" loop="0">
+      every keystroke is stored, so a closed tab costs you nothing &middot; the drawer is this browser only &mdash; export the file if you care about it &middot; 200 notes maximum on purpose &middot;
+    </marquee>
+    <a class="btn" href="index.html">back to the index</a>
+  </div>
+</div>
+
+<main class="wrap">
+
+  <section class="tight">
+    <p class="kicker">Tools &middot; one textarea and a drawer</p>
+    <h1>Notes, kept where you type them.</h1>
+    <div class="indent">
+      <p class="lead" style="max-width:58ch">
+        This is not a notes application. It is a pad: a stack of plain text, the top one open,
+        saving as you go. No markdown preview, no tags, no syncing, nothing to sign into.
+        The word count is here because that is the only measurement a note has.
+      </p>
+    </div>
+  </section>
+
+  <!-- THE PAD -->
+  <section id="pad">
+    <div class="pane">
+      <div class="listside">
+        <div class="spread">
+          <h3 style="margin:0">Drawer</h3>
+          <span class="xs" id="note-count">&nbsp;</span>
+        </div>
+        <div class="stacklist" id="stack" role="listbox" aria-label="saved notes"></div>
+        <p class="row mt8" style="margin-bottom:14px">
+          <button type="button" class="btn" id="new">new note</button>
+          <button type="button" class="btn" id="del">delete</button>
+        </p>
+        <label for="find" class="xs">FIND IN THE DRAWER</label>
+        <input id="find" type="search" placeholder="one word" style="width:100%">
+        <p class="xs faint" id="find-note">&nbsp;</p>
+        <hr class="thin">
+        <p class="row" style="margin-bottom:6px">
+          <button type="button" class="btn" id="export-one">this as .txt</button>
+          <button type="button" class="btn" id="export-all">all as one .txt</button>
+        </p>
+        <p class="row" style="margin-bottom:0">
+          <button type="button" class="btn" id="export-json">back up</button>
+          <label class="btn" for="import-file" style="cursor:pointer">restore</label>
+          <input type="file" id="import-file" accept=".txt,.json,text/plain,application/json" class="hide">
+        </p>
+      </div>
+      <div class="bodyside">
+        <div class="spread">
+          <h3 id="cur-title" style="margin:0">untitled</h3>
+          <span class="saved" id="saved-state">saved</span>
+        </div>
+        <p class="xs faint" style="margin:2px 0 8px" id="cur-meta"></p>
+        <textarea class="sheet" id="body" spellcheck="true"
+          placeholder="Start typing. It is stored the moment you stop."></textarea>
+        <div class="hud mt8">
+          <span>words <b id="c-words">0</b></span>
+          <span>characters <b id="c-chars">0</b></span>
+          <span>lines <b id="c-lines">0</b></span>
+          <span>paragraphs <b id="c-paras">0</b></span>
+          <span>read time <b id="c-read">1 min</b></span>
+        </div>
+        <p class="row mt8">
+          <button type="button" class="btn" id="pin">pin to top</button>
+          <button type="button" class="btn" id="dup">duplicate</button>
+          <button type="button" class="btn" id="clear">empty it</button>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <hr class="rule">
+
+  <!-- HOW IT HOLDS ONTO THINGS -->
+  <section id="holding">
+    <div class="cols">
+      <div>
+        <h2>How it saves</h2>
+        <table>
+          <tr><th style="width:150px">Moment</th><th>What happens</th></tr>
+          <tr><td>You type</td><td>The counter updates on the next key. Nothing else, because repainting the drawer per keystroke is how pads get laggy.</td></tr>
+          <tr><td>You pause</td><td>400 ms after the last keystroke the whole drawer is written to <code>localStorage</code> and the corner says <b>saved</b> with a time.</td></tr>
+          <tr><td>You leave</td><td>A final flush runs on <code>beforeunload</code>, for the case where you typed and walked off inside the same 400 ms.</td></tr>
+          <tr><td>You come back</td><td>The most recently touched note is open. Pinned ones sit above everything.</td></tr>
+          <tr><td>It fills up</td><td>200 notes or 5 MB, whichever comes first, then the oldest unpinned note is dropped and the bar tells you. Cap is in <code>NOTEPAD.MAX_NOTES</code>.</td></tr>
+        </table>
+        <p class="small mt16" style="max-width:56ch">
+          <b>Back up anything you would hate to lose.</b> That is not modesty, it is what
+          <code>localStorage</code> is: a per-browser cache a “clear site data” can take away,
+          and a browser under disk pressure may take away first.
+        </p>
+      </div>
+      <div style="flex:0 1 260px">
+        <div class="draw" data-art="img/notepad.png" data-w="360"
+             data-alt="Ink drawing of a notepad with a red pin through the top corner, three ruled lines, bottom corner curling.">
+          <b>DRAW THIS &mdash; IMAGE 6</b> <span class="size">(tall, roughly 360 &times; 520)</span>
+          <p style="margin:8px 0 0">A pad of paper, not a screen. Nine or ten sheets stapled or pinned at the top with one red pin, top sheet bearing three ruled lines of fake handwriting (wavy is fine, no readable words). The bottom-right corner of the top sheet is lifted and curling over. The sheet underneath peeks out at the left by 3 mm. Draw the pad slightly rotated anti-clockwise. No shadow except a hard one under the curl.</p>
+          <p style="margin:8px 0 0" class="size">SAVE AS: <code>img/notepad.png</code></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="ring mt24" id="ring"></div>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <p style="margin:0 0 6px">Photon.Directory &middot; notepad &middot; key <code>photon.notes.v1</code> in this browser</p>
+    <p style="margin:0"><a href="index.html">Index</a> <span class="sep">|</span> <a href="sketch.html">the drawing half of the same idea</a></p>
+  </div>
+</footer>
+
+<script src="js/index-data.js"></script>
+<script src="js/directory.js"></script>
+<script src="js/notepad.js"></script>
+<script>
+(function () {
+  "use strict";
+  var N = window.NOTEPAD, body = PH.qs("#body"), stack = PH.qs("#stack"), find = PH.qs("#find");
+  var notes = N.normalize(PH.store.get(N.KEY, []));
+  var cur = null, dirty = false, timer = 0, first = true;
+
+  PH.markNav();
+  PH.mountRing(PH.qs("#ring"));
+  PH.hydrateArt();
+  if (!PH.store.available) {
+    PH.qs("#saved-state").textContent = "not saving — no storage here";
+    PH.qs("#saved-state").style.color = "#c2303f";
+  }
+
+  function saved(text, kind) {
+    var n = PH.qs("#saved-state");
+    n.textContent = text;
+    n.style.color = kind === "bad" ? "#c2303f" : (kind === "up" ? "#4c9a6a" : "");
+  }
+  function commit(quiet) {
+    if (cur) {
+      /* cur is the id string, not the note: open() stores the id so that a
+         stale object from before a reload can never be written back */
+      var found = notes.filter(function (n) { return n.id === cur; })[0];
+      if (found) { found.text = body.value; found.updated = Date.now(); }
+    }
+    notes = N.normalize(notes);
+    var ok = PH.store.set(N.KEY, notes);
+    dirty = false;
+    if (!quiet) saved(ok ? "saved " + new Date().toLocaleTimeString() : "saved for this tab only", ok ? "up" : "bad");
+    drawStack();
+    counts();
+  }
+  function counts() {
+    var c = N.count(body.value);
+    PH.qs("#c-words").textContent = c.words;
+    PH.qs("#c-chars").textContent = c.chars.toLocaleString();
+    PH.qs("#c-lines").textContent = c.lines;
+    PH.qs("#c-paras").textContent = c.paras;
+    PH.qs("#c-read").textContent = c.words ? c.readMin + " min" : "—";
+    var note = notes.filter(function (n) { return n.id === cur; })[0];
+    PH.qs("#cur-title").textContent = N.titleOf(body.value);
+    PH.qs("#cur-meta").textContent = note
+      ? ("started " + PH.stamp(note.created) + " · touched " + N.stamp(note.updated) + (note.pin ? " · pinned" : ""))
+      : "";
+    PH.qs("#pin").textContent = note && note.pin ? "unpin" : "pin to top";
+    document.title = (body.value.trim() ? N.titleOf(body.value) + " — " : "") + "Notepad — Photon.Directory";
+  }
+  function drawStack() {
+    var q = find.value;
+    var visible = N.sortNotes(notes).map(function (n) {
+      return { note: n, m: N.matches(n, q) };
+    }).filter(function (x) { return !q.trim() || x.m.hit; });
+    PH.qs("#note-count").textContent = notes.length + " of " + N.MAX_NOTES + " slots";
+    if (!visible.length) {
+      stack.innerHTML = '<button type="button" class="sel" disabled>the drawer is ' +
+        (q.trim() ? "empty for that word" : "empty") + "</button>";
+      PH.qs("#find-note").innerHTML = q.trim() ? "&nbsp;" : "new note up there &rarr;";
+      return;
+    }
+    stack.innerHTML = visible.map(function (x) {
+      var c = N.count(x.note.text);
+      return '<button type="button" data-id="' + PH.esc(x.note.id) + '"' +
+        (x.note.id === cur ? ' class="sel"' : "") + ' role="option">' +
+        '<span class="xs" style="display:block;color:#e8e3d9">' +
+        (x.note.pin ? '<span style="color:#c2303f">pin </span>' : "") +
+        PH.esc(N.titleOf(x.note.text)) + "</span>" +
+        '<span class="xs faint">' + c.words + " w · " + N.stamp(x.note.updated) +
+        (x.m.count > 1 && q.trim() ? " · " + x.m.count + " hits" : "") + "</span></button>";
+    }).join("");
+    var hits = visible.reduce(function (n, x) { return n + x.m.count; }, 0);
+    PH.qs("#find-note").textContent = q.trim()
+      ? visible.length + " note(s), " + hits + " match" + (hits === 1 ? "" : "es")
+      : "\u00a0";
+  }
+  function open(id) {
+    var note = notes.filter(function (n) { return n.id === id; })[0];
+    if (!note) return;
+    cur = id;
+    body.value = note.text;
+    drawStack();
+    counts();
+  }
+  function addNote(text) {
+    var n = N.blank();
+    n.text = text || "";
+    notes = N.put(notes, n);
+    commit(true);
+    open(n.id);
+    body.focus();
+    saved("new note", "up");
+    return n;
+  }
+
+  body.addEventListener("input", function () {
+    if (!cur) { addNote(body.value); return; }
+    dirty = true;
+    saved("typing…", "hold");
+    counts();
+    clearTimeout(timer);
+    timer = setTimeout(function () { commit(); }, 400);
+  });
+  stack.addEventListener("click", function (e) {
+    var b = e.target.closest ? e.target.closest("[data-id]") : null;
+    if (b) open(b.getAttribute("data-id"));
+  });
+  find.addEventListener("input", drawStack);
+  PH.qs("#new").addEventListener("click", function () { addNote(""); });
+  PH.qs("#del").addEventListener("click", function () {
+    if (!cur) return;
+    var note = notes.filter(function (n) { return n.id === cur; })[0];
+    if (!window.confirm("Delete “" + N.titleOf(note ? note.text : "") + "”? It is gone from this browser immediately.")) return;
+    notes = N.remove(notes, cur);
+    cur = null;
+    PH.store.set(N.KEY, notes);
+    var next = N.sortNotes(notes)[0];
+    if (next) open(next.id); else { body.value = ""; counts(); drawStack(); }
+    saved("deleted", "bad");
+  });
+  PH.qs("#pin").addEventListener("click", function () {
+    var note = notes.filter(function (n) { return n.id === cur; })[0];
+    if (!note) return;
+    note.pin = !note.pin;
+    commit(true);
+    drawStack();
+    counts();
+    saved(note.pin ? "pinned" : "unpinned", "up");
+  });
+  PH.qs("#dup").addEventListener("click", function () {
+    var note = notes.filter(function (n) { return n.id === cur; })[0];
+    addNote((note ? note.text : "") + "\n");
+  });
+  PH.qs("#clear").addEventListener("click", function () {
+    if (body.value.trim() && !window.confirm("Empty this note? The text goes away.")) return;
+    body.value = "";
+    commit();
+  });
+  function save(name, text, type) {
+    var a = document.createElement("a");
+    var url = URL.createObjectURL(new Blob([text], { type: type }));
+    a.href = url; a.download = name;
+    document.body.appendChild(a); a.click();
+    setTimeout(function () { URL.revokeObjectURL(url); a.remove(); }, 500);
+  }
+  PH.qs("#export-one").addEventListener("click", function () {
+    if (!body.value.trim()) { saved("nothing in it to export", "bad"); return; }
+    save(N.fileName(body.value), body.value, "text/plain;charset=utf-8");
+  });
+  PH.qs("#export-all").addEventListener("click", function () {
+    if (!notes.length) { saved("the drawer is empty", "bad"); return; }
+    save("photon-notes-" + new Date().toISOString().slice(0, 10) + ".txt", N.exportAll(notes), "text/plain;charset=utf-8");
+  });
+  PH.qs("#export-json").addEventListener("click", function () {
+    save("photon-notes.json", JSON.stringify({ photonNotes: 1, notes: N.sortNotes(notes) }, null, 1), "application/json");
+  });
+  PH.qs("#import-file").addEventListener("change", function (e) {
+    var f = e.target.files && e.target.files[0];
+    if (!f) return;
+    var r = new FileReader();
+    r.onload = function () {
+      var text = String(r.result || ""), added = 0;
+      try {
+        if (/\.json$/i.test(f.name)) {
+          var data = JSON.parse(text);
+          (Array.isArray(data) ? data : data.notes || []).forEach(function (n) {
+            notes = N.put(notes, N.normalize([n])[0] || n); added++;
+          });
+        } else {
+          N.importText(text).forEach(function (n) { notes = N.put(notes, n); added++; });
+        }
+      } catch (err) { saved("that file is not a note backup I recognise", "bad"); return; }
+      PH.store.set(N.KEY, notes);
+      drawStack();
+      if (added) open(N.sortNotes(notes)[0].id);
+      saved(added + " note(s) read in", "up");
+    };
+    r.readAsText(f);
+    e.target.value = "";
+  });
+  document.addEventListener("keydown", function (e) {
+    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "s") { e.preventDefault(); commit(); }
+    if (e.altKey && e.key.toLowerCase() === "n") { e.preventDefault(); addNote(""); }
+  });
+  window.addEventListener("beforeunload", function () { if (dirty) commit(true); });
+  document.addEventListener("visibilitychange", function () { if (document.hidden && dirty) commit(true); });
+
+  if (!notes.length && !PH.store.get("photon.notes.seeded", false)) {
+    PH.store.set("photon.notes.seeded", true);
+    notes = N.put(notes, N.normalize([{
+      id: "welcome",
+      text: "This drawer is empty until you write in it.\n" +
+        "Everything here stays in this browser — there is no server to hold it, and no\n" +
+        "account to make you remember. Autosave fires 400 ms after you stop typing.\n" +
+        "Back it up with the buttons on the left if it matters to you.",
+      created: Date.now(), updated: Date.now(), pin: true
+    }])[0] || null);
+  }
+  var open0 = N.sortNotes(notes)[0];
+  if (open0) open(open0.id); else { body.value = ""; counts(); }
+  drawStack();
+})();
+</script>
+</body>
+</html>

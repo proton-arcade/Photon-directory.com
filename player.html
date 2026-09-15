@@ -1,0 +1,276 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Media Player — Photon.Directory</title>
+<meta name="description" content="A media player for files on your own disk: .mkv, .mp4, .webm, .mov and audio, with a playlist, captions, resume, frame step and a container probe.">
+<meta name="theme-color" content="#0a0d16">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%230a0d16'/%3E%3Crect x='3.5' y='3.5' width='25' height='25' fill='none' stroke='%23f2c14e' stroke-width='3'/%3E%3Crect x='9' y='10' width='14' height='2.5' fill='%23e8e3d9'/%3E%3Crect x='9' y='15' width='14' height='2.5' fill='%238fb7f0'/%3E%3Crect x='9' y='20' width='8' height='2.5' fill='%23c2303f'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <a class="logo" href="index.html">Photon<span>.</span>Directory</a>
+    <span class="tag">media player &middot; local files only &middot; nothing uploads</span>
+  </div>
+</header>
+
+<nav>
+  <div class="wrap">
+    <a class="btn" href="index.html">Home</a>
+    <a class="btn" href="games.html">Game Cabinet</a>
+    <a class="btn" href="player.html">Media Player</a>
+    <a class="btn" href="eagler.html">Eaglercraft</a>
+    <a class="btn" href="notepad.html">Notepad</a>
+    <a class="btn" href="sketch.html">Sketch Pad</a>
+    <a class="btn" href="search.html">Search</a>
+    <a class="btn hot" href="brief.html">Design Brief &rarr;</a>
+  </div>
+</nav>
+
+<div class="bar">
+  <div class="wrap">
+    <span class="lbl">DECK</span>
+    <marquee behavior="scroll" scrolldelay="80" loop="0">
+      a .mkv is a box, not a format &mdash; whether it plays depends on what is inside it &middot; this page reads the first 3 MB and the last 1 MB of your file to tell you &middot; .avi is a 1992 box that no browser ever opened, and the panel below will say so &middot;
+    </marquee>
+    <a class="btn" href="index.html">back to the index</a>
+  </div>
+</div>
+
+<main class="wrap">
+
+  <section class="tight">
+    <p class="kicker">Player &middot; no server, no upload, no telemetry</p>
+    <h1>Load a folder. It plays what a browser can play, and explains the rest.</h1>
+    <div class="indent">
+      <p class="lead" style="max-width:60ch">
+        Containers are paperwork: MKV, MP4 and MOV describe where the tracks sit. Codecs are the
+        picture itself: H.264, VP9, DivX, ProRes. Browsers are generous with the paperwork and
+        strict about the picture, so <code>film.mkv</code> may play perfectly and
+        <code>rip.mkv</code> may do nothing. This page tells you which one you have before you
+        go looking for another player.
+      </p>
+    </div>
+  </section>
+
+  <!-- GET FILES IN -->
+  <section id="load" class="tight">
+    <div class="drop" id="drop">
+      <b style="color:#f2c14e;font-family:Georgia,serif;font-size:17px">Drop files or a whole folder here</b>
+      <p class="small" style="margin:6px 0 10px">
+        Video: <code>.mkv .webm .mp4 .m4v .mov .avi .mpg .mts .ogv</code> &nbsp;·&nbsp;
+        audio: <code>.mp3 .m4a .aac .ogg .opus .flac .wav .aiff</code>
+      </p>
+      <p class="row" style="margin:0;justify-content:flex-start">
+        <label class="btn" for="file-input">Choose files</label>
+        <input type="file" id="file-input" multiple accept="video/*,audio/*,.mkv,.avi,.mov,.m4v,.flv,.mpg,.mpeg,.mts,.ts,.ogv,.mka" class="hide">
+        <label class="btn" for="folder-input">Choose a folder</label>
+        <input type="file" id="folder-input" webkitdirectory directory multiple class="hide">
+        <label class="btn" for="sub-input">Add captions</label>
+        <input type="file" id="sub-input" accept=".srt,.vtt,text/plain" class="hide">
+        <button type="button" class="btn" id="pl-clear">Clear the list</button>
+      </p>
+      <p class="xs faint" style="margin:8px 0 0">
+        Captions are matched by name: <code>episode-03.mkv</code> picks up <code>episode-03.srt</code>
+        in the same pick. <code>.srt</code> is converted to WebVTT in memory, never on a server.
+      </p>
+    </div>
+  </section>
+
+  <!-- THE STAGE -->
+  <section id="watch" class="tight">
+    <div class="stage" id="stage">
+      <div class="no-media" id="no-media">
+        nothing loaded — drop a folder anywhere on this page, or press <b>load files</b> above<br>
+        <span class="xs faint">the stage stays empty until you pick something. nothing is uploaded, and the only thing kept afterwards is where you stopped</span>
+      </div>
+      <video id="stage-media" preload="metadata" playsinline hidden></video>
+      <div class="deck">
+        <button type="button" class="btn" id="prev" title="previous item (PageUp)">&laquo;</button>
+        <button type="button" class="btn" id="play" title="play / pause (space)">play</button>
+        <button type="button" class="btn" id="next" title="next item (PageDown)">&raquo;</button>
+        <button type="button" class="btn skip" data-skip="-10" title="back ten seconds (j)">&minus;10s</button>
+        <button type="button" class="btn skip" data-skip="-5" title="back five seconds (left arrow)">&minus;5s</button>
+        <button type="button" class="btn frame" data-frame="-1" title="one frame back (comma)">|&#9664;</button>
+        <button type="button" class="btn frame" data-frame="1" title="one frame forward (period)">&#9654;|</button>
+        <button type="button" class="btn skip" data-skip="5" title="forward five seconds (right arrow)">+5s</button>
+        <button type="button" class="btn skip" data-skip="10" title="forward ten seconds (k)">+10s</button>
+        <span class="time" id="t-cur">0:00</span>
+        <span class="time faint">/</span>
+        <span class="time" id="t-dur">—:——</span>
+        <span class="time" id="t-scrub"></span>
+        <span class="xs faint" id="t-meta"></span>
+      </div>
+      <div class="deck">
+        <div class="grow" style="position:relative">
+          <input type="range" id="scrub" class="scrub" min="0" max="0" step="0.01" value="0" aria-label="position in the file">
+          <div id="buffered" style="position:absolute;left:0;top:-4px;height:2px;background:#2f5fa8;width:0%"></div>
+        </div>
+        <input type="range" id="vol" min="0" max="1" step="0.01" value="1" style="width:90px" aria-label="volume">
+        <span class="xs" id="vol-read">100%</span>
+        <button type="button" class="btn" id="mute">mute</button>
+        <button type="button" class="btn" id="ab-a" title="mark A (n)">A</button>
+        <button type="button" class="btn" id="ab-b" title="mark B (b)">B</button>
+        <button type="button" class="btn" id="ab-off">no loop</button>
+        <span class="xs faint" id="ab-read">no loop</span>
+      </div>
+      <div class="deck" id="rate-row">
+        <span class="xs dim">SPEED</span>
+        <button type="button" class="btn" data-rate="0.25">0.25&times;</button>
+        <button type="button" class="btn" data-rate="0.5">0.5&times;</button>
+        <button type="button" class="btn" data-rate="0.75">0.75&times;</button>
+        <button type="button" class="btn" data-rate="1">1&times;</button>
+        <button type="button" class="btn" data-rate="1.25">1.25&times;</button>
+        <button type="button" class="btn" data-rate="1.5">1.5&times;</button>
+        <button type="button" class="btn" data-rate="2">2&times;</button>
+        <button type="button" class="btn" data-rate="3">3&times;</button>
+        <button type="button" class="btn" data-rate="4">4&times;</button>
+        <span class="xs" id="rate-read">1×</span>
+        <span class="sep">|</span>
+        <button type="button" class="btn" id="snap" title="save this frame as a PNG (s)">frame grab</button>
+        <button type="button" class="btn" id="pip" title="picture in picture (p)">small window</button>
+        <button type="button" class="btn" id="fs" title="fullscreen (f)">fullscreen</button>
+        <button type="button" class="btn" id="repeat">repeat: off</button>
+        <label for="track-menu" class="xs dim">CAPTIONS</label>
+        <select id="track-menu" disabled><option value="-1">no captions</option></select>
+        <button type="button" class="btn" id="help-btn">keys</button>
+      </div>
+    </div>
+
+    <div class="spread mt8">
+      <span class="small" id="now-name">nothing loaded</span>
+      <span class="xs faint" id="now-meta"></span>
+    </div>
+    <p class="small" id="status-line" role="status" aria-live="polite">Nothing loaded. Files never leave this tab.</p>
+    <div class="hide box" id="help">
+      <h3 style="margin-bottom:6px">Keys</h3>
+      <p class="xs" style="margin:0" id="kb-note"></p>
+    </div>
+    <div id="player-out"></div>
+  </section>
+
+  <!-- PLAYLIST -->
+  <section id="list" class="tight">
+    <div class="spread">
+      <h2 style="margin-bottom:2px">Playlist</h2>
+      <span class="xs" id="pl-count">0 items · 0 B</span>
+    </div>
+    <div class="playlist" id="playlist"></div>
+  </section>
+
+  <!-- DRAWN IMAGE 4 -->
+  <section class="tight">
+    <div class="draw" data-art="img/player.png" data-w="560"
+         data-alt="Ink drawing of the player as an object: a low wide window with a video panel, a scrub handle two thirds along, a red pin at the corner.">
+      <b>DRAW THIS &mdash; IMAGE 4</b> <span class="size">(wide, roughly 560 &times; 300)</span>
+      <p style="margin:8px 0 0">Draw this page as a thing sitting on a desk: a low, wide window, the picture area taking the left two thirds, a narrow column of playlist lines on the right. Under it, a scrub bar with the handle <em>not</em> in the middle — two thirds along, so the clip is nearly over. One red pin in the top-right corner, nothing else in colour. A small square marked with <code>.mkv</code> half-inserted into the window, like a card into a slot. Ink line-work; do not shade the video panel.</p>
+      <p style="margin:8px 0 0" class="size">SAVE AS: <code>img/player.png</code> &mdash; the box becomes the drawing on its own once the file is in <code>img/</code>.</p>
+    </div>
+  </section>
+
+  <hr class="rule">
+
+  <!-- WHAT PLAYS -->
+  <section id="formats">
+    <p class="kicker">Practical part</p>
+    <h2>What plays, what does not, and what to do about it</h2>
+    <div class="indent">
+      <table>
+        <tr>
+          <th style="width:120px">File</th><th style="width:110px">Container</th><th>Verdict on a normal browser</th>
+        </tr>
+        <tr><td><code>.mkv</code></td><td>Matroska</td>
+          <td>Plays when the picture is H.264, HEVC or VP9/VP8 and the sound is AAC, MP3, Opus, Vorbis, FLAC or PCM. Fails on AC-3 and E-AC-3 in Firefox, on anything DivX or Xvid, on DTS and on TrueHD. Chapters and multiple audio tracks are ignored — the browser only ever takes the default pair.</td></tr>
+        <tr><td><code>.mp4</code> <code>.m4v</code></td><td>ISO</td>
+          <td>The safest thing you can hand a browser. Still fails if the video is MPEG-4 Part 2 or ProRes, and a file whose <code>moov</code> box is at the end cannot be seeked until it is fully read.</td></tr>
+        <tr><td><code>.webm</code></td><td>Matroska, WebM codecs</td>
+          <td>VP8/VP9/AV1 with Opus or Vorbis. If you shot something for the web, this and mp4 are the only two fights worth having.</td></tr>
+        <tr><td><code>.mov</code></td><td>QuickTime</td>
+          <td>Usually fine if the codec inside is H.264 or HEVC. Screen recordings from a phone are the common one that is HEVC and therefore browser-dependent.</td></tr>
+        <tr><td><code>.avi</code></td><td>RIFF/AVI, 1992</td>
+          <td>Never. Not a codec problem — no browser has an AVI demuxer. <code>ffmpeg -i in.avi -c copy out.mkv</code> is a copy and takes seconds.</td></tr>
+        <tr><td><code>.flv</code> <code>.vob</code> <code>.mpg</code> <code>.ts</code></td><td>old / MPEG</td>
+          <td>Demux into something first. The streams inside are often fine; the paperwork is not.</td></tr>
+        <tr><td><code>.mp3</code> <code>.m4a</code> <code>.ogg</code> <code>.opus</code> <code>.flac</code> <code>.wav</code></td><td>audio</td>
+          <td>All fine. The stage collapses to a black panel and the deck keeps working, which is what you want for a 90 minute recording.</td></tr>
+      </table>
+
+      <p class="small mt16" style="max-width:60ch">
+        The <b>frame grab</b> button writes the current frame out as a PNG at full decoded
+        resolution. It is the fastest way to check whether a file is worth keeping: a
+        badly encoded source shows its blocks at 1:1 immediately.
+      </p>
+    </div>
+  </section>
+
+  <!-- HONEST LIMITS -->
+  <section id="limits">
+    <div class="cols">
+      <div>
+        <h3>Three things this player will not do</h3>
+        <ul class="small">
+          <li>It will not decode a codec the browser has no decoder for. No ffmpeg is loaded,
+            because a 30 MB WASM transcoder in a folder that is trying to be light is a bad trade.
+            If you want that, say so and I will add it behind a checkbox.</li>
+          <li>It will not pick audio tracks. Matroska lets a file carry six;
+            <code>&lt;video&gt;</code> lets you have the default one.</li>
+          <li>It will not play DRM anything, and it will not open a stream from the internet.
+            This page has no <code>fetch</code> in it at all.</li>
+        </ul>
+      </div>
+      <div>
+        <h3>Where your position is kept</h3>
+        <p class="small">
+          The player writes the name, the byte size and a coarse timestamp of every file you
+          start into <code>localStorage</code> under <code>photon.resume.v1</code>, capped at
+          the 60 most recent. That is how it can offer to put you back at 41:12 tomorrow.
+          It is names and numbers only, it never leaves the machine, and
+          <button type="button" class="btn" id="forget" style="padding:2px 8px">forget them all</button>
+          deletes it right now.
+        </p>
+        <p class="xs faint" id="forget-note"></p>
+      </div>
+    </div>
+  </section>
+
+  <div class="ring mt24" id="ring"></div>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <p style="margin:0 0 6px">Photon.Directory &middot; media player &middot; <code>js/player.js</code> over <code>js/player-logic.js</code></p>
+    <p style="margin:0">The container probe is unit-tested against hand-built Matroska, MP4 and AVI
+      bytes, plus 400 random buffers, so a corrupt file cannot crash the page.
+      <a href="index.html">Index</a></p>
+  </div>
+</footer>
+
+<script src="js/index-data.js"></script>
+<script src="js/directory.js"></script>
+<script src="js/player-logic.js"></script>
+<script src="js/player.js"></script>
+<script>
+(function () {
+  "use strict";
+  PH.markNav();
+  PH.mountRing(PH.qs("#ring"));
+  PH.hydrateArt();
+  var help = PH.qs("#help"), hb = PH.qs("#help-btn");
+  hb.addEventListener("click", function () {
+    help.classList.toggle("hide");
+    hb.classList.toggle("on", !help.classList.contains("hide"));
+  });
+  PH.qs("#forget").addEventListener("click", function () {
+    PH.store.del("photon.resume.v1");
+    if (window.PHOTON_PLAYER) { PHOTON_PLAYER.st.resume = {}; }
+    PH.qs("#forget-note").textContent = "Cleared. Every position is gone from this browser.";
+  });
+})();
+</script>
+</body>
+</html>

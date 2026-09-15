@@ -1,0 +1,533 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Sketch Pad — Photon.Directory</title>
+<meta name="description" content="A drawing pad for the hub's own missing artwork: five inks, a straight edge, undo, a faint underlay to trace, and a PNG export at the exact size each slot asks for.">
+<meta name="theme-color" content="#0a0d16">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%230a0d16'/%3E%3Crect x='3.5' y='3.5' width='25' height='25' fill='none' stroke='%23f2c14e' stroke-width='3'/%3E%3Crect x='9' y='10' width='14' height='2.5' fill='%23e8e3d9'/%3E%3Crect x='9' y='15' width='14' height='2.5' fill='%238fb7f0'/%3E%3Crect x='9' y='20' width='8' height='2.5' fill='%23c2303f'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <a class="logo" href="index.html">Photon<span>.</span>Directory</a>
+    <span class="tag">sketch pad &middot; for the drawings the brief is owed</span>
+  </div>
+</header>
+
+<nav>
+  <div class="wrap">
+    <a class="btn" href="index.html">Home</a>
+    <a class="btn" href="games.html">Game Cabinet</a>
+    <a class="btn" href="player.html">Media Player</a>
+    <a class="btn" href="eagler.html">Eaglercraft</a>
+    <a class="btn" href="notepad.html">Notepad</a>
+    <a class="btn" href="sketch.html">Sketch Pad</a>
+    <a class="btn" href="search.html">Search</a>
+    <a class="btn hot" href="brief.html">Design Brief &rarr;</a>
+  </div>
+</nav>
+
+<div class="bar">
+  <div class="wrap">
+    <span class="lbl">PAD</span>
+    <marquee behavior="scroll" scrolldelay="80" loop="0">
+      pick the slot you are drawing and the sheet comes up at its exact pixel size &middot; export names the file for you &middot; work is kept in this browser, strokes not pixels, so undo still works tomorrow &middot; nothing here is uploaded &middot;
+    </marquee>
+    <a class="btn" href="brief.html">the eight slots</a>
+  </div>
+</div>
+
+<main class="wrap">
+
+  <section class="tight">
+    <p class="kicker">Tools &middot; ink, not filters</p>
+    <h1>Draw the missing artwork here, at the size it has to be.</h1>
+    <div class="indent">
+      <p class="lead" style="max-width:58ch">
+        The hub is text with eight holes where drawings should go. This pad is not a substitute
+        for a pen — it is a fallback for the nights the pen is not out. Choose the hole, and the
+        sheet opens at its exact pixel size, so what you export is what the page was asking for.
+      </p>
+    </div>
+  </section>
+
+  <!-- SLOT PICKER, printed like the rest of the hub -->
+  <section id="slots" class="tight">
+    <div class="spread">
+      <h2 style="margin-bottom:2px">Holes to fill</h2>
+      <span class="xs" id="slot-status">&nbsp;</span>
+    </div>
+    <div class="dir" id="slot-rows"></div>
+    <p class="dir-note">
+      A row is one <code>.draw</code> box on one page. The status is read live: as soon as
+      <code>img/<span id="sample-name">name</span>.png</code> exists, the box on that page becomes
+      the drawing and this row says <b>filled</b>.
+    </p>
+  </section>
+
+  <!-- THE SHEET -->
+  <section id="sheet" class="tight">
+    <hr class="rule">
+    <div class="spread">
+      <h2 id="sheet-title" style="margin-bottom:2px">drawer — 800 × 420</h2>
+      <span class="xs" id="sheet-meta">no strokes yet</span>
+    </div>
+
+    <div class="pad-wrap">
+      <canvas id="pad" width="800" height="420" aria-label="drawing surface. Draw with a mouse, a finger or a stylus."></canvas>
+    </div>
+
+    <div class="row mt8" id="controls">
+      <span class="xs dim">INK</span>
+      <span id="inks" style="display:inline-flex;gap:6px"></span>
+      <span class="sep">|</span>
+      <span class="xs dim">WIDTH</span>
+      <span id="widths" style="display:inline-flex;gap:6px"></span>
+      <button type="button" class="btn" id="eraser">eraser</button>
+    </div>
+    <div class="row mt8">
+      <button type="button" class="btn" id="undo">&larr; undo</button>
+      <button type="button" class="btn" id="redo">redo &rarr;</button>
+      <button type="button" class="btn" id="grid">grid</button>
+      <button type="button" class="btn" id="edge">straight edge</button>
+      <button type="button" class="btn" id="paper">flip paper</button>
+      <button type="button" class="btn" id="clear">clear sheet</button>
+      <span class="sep">|</span>
+      <label class="btn" for="trace" style="cursor:pointer">trace underlay</label>
+      <input type="file" id="trace" accept="image/*" class="hide">
+      <button type="button" class="btn" id="trace-off">no underlay</button>
+      <label for="trace-alpha" class="xs">underlay</label>
+      <input type="range" id="trace-alpha" min="0" max="90" value="35" style="width:90px">
+    </div>
+    <div class="row mt8">
+      <button type="button" class="btn hot" id="export">export <span id="export-name">drawer.png</span></button>
+      <button type="button" class="btn" id="export-2x">at 2&times;</button>
+      <button type="button" class="btn" id="save">keep in this browser</button>
+      <span class="xs" id="pad-status">nothing exported yet</span>
+    </div>
+
+    <div class="cols mt16">
+      <div style="flex:1 1 300px">
+        <h3>How the export works</h3>
+        <p class="small">
+          The sheet's pixel size <em>is</em> the slot's size, so <b>export</b> writes what you drew
+          with no scaling at all. <b>at 2&times;</b> doubles it for a print or a crisp
+          <code>@2x</code>. Changing the hole mid-drawing resamples what you have already drawn to
+          the new sheet — nearest neighbour, so pencil stays pencil and does not turn into fog.
+        </p>
+        <p class="small">
+          A PNG with alpha off, paper colour filled first: a drawing on <code>#e8e3d9</code> will
+          sit in the dashed box exactly as it reads here. If you want the paper to be transparent,
+          flip to <b>night</b> paper and the export keeps that.
+        </p>
+      </div>
+      <div style="flex:1 1 260px">
+        <div class="draw" data-art="img/sketch.png" data-w="420"
+             data-alt="Ink drawing of a hand holding a pen over paper, one line unfinished, ink pooling where the pen pressed.">
+          <b>DRAW THIS &mdash; IMAGE 7</b> <span class="size">(square-ish, roughly 420 &times; 420)</span>
+          <p style="margin:8px 0 0">A right hand from above, holding a pen, caught mid-stroke. The line it is drawing should run off the left edge of the paper. Show one place where the pen pressed and ink pooled — a start, a stop, a corner. The hand can be simplified to its outline; do not draw fingernails. The paper has the faint ghost of a rectangle on it, which is the slot being traced.</p>
+          <p style="margin:8px 0 0" class="size">SAVE AS: <code>img/sketch.png</code> &mdash; that is the drawing this page is for. Draw it in the pad above, or on paper, either way it goes in the same box.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="rule">
+
+  <section id="method" class="tight">
+    <div class="cols">
+      <div>
+        <h2>Seven lines that help</h2>
+        <ul class="small">
+          <li>Draw the outline first with width 1 or 2; the brief wants line-work, not shading.</li>
+          <li>Keep the focal object off-centre. Every slot in the brief says do not centre it.</li>
+          <li>One red element per drawing, and only one — that is the pin, the corner, the label.</li>
+          <li>Use the grid for the paper edge and nothing else; a drawing on a grid looks like a diagram.</li>
+          <li>Straight edge (or hold <kbd>shift</kbd> while dragging) for tables, frames, the CRT box.</li>
+          <li>Trace underlay: drop a photo of the real desk in, dim it, draw over it, then turn it off.</li>
+          <li>Export, then <em>look at it at the size it will be shown</em>. Pencil that reads at
+            800 px turns to mush at 360.</li>
+        </ul>
+      </div>
+      <div>
+        <div class="note">
+          <h3>What is kept, and for how long</h3>
+          <p class="small" style="margin-bottom:0">
+            The pad stores strokes as points in <code>localStorage</code>, not a flattened image.
+            That is why undo survives a reload and why the file stays small — a full drawing of a
+            desk is around 90 KB of numbers. It is still a cache and not a backup: when you are happy
+            with a sheet, <b>export the PNG</b> and put it in <code>img/</code>. Then the drawing is
+            a file in the repo, which is the only place anything on this hub is safe.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="ring mt24" id="ring"></div>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <p style="margin:0 0 6px">Photon.Directory &middot; sketch pad &middot; <code>js/sketch.js</code>, one canvas, no brushes</p>
+    <p style="margin:0"><a href="brief.html">the brief's drawing list</a> <span class="sep">|</span> <a href="index.html">index</a></p>
+  </div>
+</footer>
+
+<script src="js/index-data.js"></script>
+<script src="js/directory.js"></script>
+<script src="js/sketch.js"></script>
+<script>
+(function () {
+  "use strict";
+  PH.markNav();
+  PH.mountRing(PH.qs("#ring"));
+
+  var S = window.SKETCH;
+  var KEY = "photon.sketch.v1";
+  var pad = PH.qs("#pad"), ctx = pad.getContext("2d");
+  var under = document.createElement("canvas"), uctx = under.getContext("2d");
+  var st = {
+    slot: S.SLOTS[0].name, paper: 0, ink: "#16181f", w: 2, erase: false,
+    grid: false, edge: false, strokes: [], redo: [], alpha: 35, dirty: false
+  };
+  var saved = PH.store.get(KEY, null);
+  if (saved && typeof saved === "object") {
+    ["slot", "paper", "ink", "w", "grid", "edge", "alpha"].forEach(function (k) {
+      if (saved[k] != null) st[k] = saved[k];
+    });
+    if (Array.isArray(saved.strokes)) st.strokes = saved.strokes.slice(-3000);
+    if (S.byName(st.slot)) st.slot = st.slot; else st.slot = S.SLOTS[0].name;
+  }
+
+  var timer = 0;
+  function slot() { return S.byName(st.slot) || S.SLOTS[0]; }
+  function note(t, bad) {
+    var n = PH.qs("#pad-status");
+    n.textContent = t;
+    n.style.color = bad ? "#c2303f" : "";
+  }
+  function persist() {
+    clearTimeout(timer);
+    timer = setTimeout(function () {
+      var ok = PH.store.set(KEY, {
+        slot: st.slot, paper: st.paper, ink: st.ink, w: st.w,
+        grid: st.grid, edge: st.edge, alpha: st.alpha,
+        strokes: st.strokes.slice(-3000)
+      });
+      st.dirty = false;
+      PH.qs("#sheet-meta").textContent = st.strokes.length + " strokes · " +
+        (ok ? "kept here" : "not kept (no storage)") + " · " + new Date().toLocaleTimeString();
+    }, 700);
+  }
+
+  /* ---------------- painting ---------------- */
+  function paperHex() { return S.PAPERS[st.paper % S.PAPERS.length].hex; }
+  function sizeSheet() {
+    var s = slot();
+    var old = { w: pad.width, h: pad.height, data: null };
+    if (st.strokes.length && pad.width) {
+      try { old.data = ctx.getImageData(0, 0, pad.width, pad.height); } catch (e) { old.data = null; }
+    }
+    pad.width = s.w; pad.height = s.h;
+    under.width = s.w; under.height = s.h;
+    if (old.data && old.w && (old.w !== s.w || old.h !== s.h)) {
+      /* keep the drawing when the sheet changes shape: nearest neighbour, no blur */
+      var res = S.resample(old.data.data, old.w, old.h, s.w, s.h);
+      ctx.putImageData(new ImageData(res, s.w, s.h), 0, 0);
+    }
+    PH.qs("#sheet-title").textContent = s.name + " — " + s.w + " × " + s.h + " · " + s.note;
+    PH.qs("#export-name").textContent = S.exportName(s);
+    PH.qs("#sample-name").textContent = s.name;
+    redraw();
+  }
+  function drawStroke(g, s, scale) {
+    scale = scale || 1;
+    g.lineCap = "round"; g.lineJoin = "round";
+    g.strokeStyle = s.e ? paperHex() : s.c;
+    g.lineWidth = Math.max(0.5, s.w * scale);
+    var pts = s.pts;
+    if (!pts || !pts.length) return;
+    g.beginPath();
+    g.moveTo(pts[0].x * scale, pts[0].y * scale);
+    if (pts.length < 3) {
+      for (var i = 1; i < pts.length; i++) g.lineTo(pts[i].x * scale, pts[i].y * scale);
+    } else {
+      for (var j = 1; j < pts.length - 1; j++) {
+        var mx = (pts[j].x + pts[j + 1].x) / 2 * scale;
+        var my = (pts[j].y + pts[j + 1].y) / 2 * scale;
+        g.quadraticCurveTo(pts[j].x * scale, pts[j].y * scale, mx, my);
+      }
+      g.lineTo(pts[pts.length - 1].x * scale, pts[pts.length - 1].y * scale);
+    }
+    g.stroke();
+  }
+  function redraw() {
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
+    ctx.fillStyle = paperHex();
+    ctx.fillRect(0, 0, pad.width, pad.height);
+    ctx.globalAlpha = (100 - st.alpha) / 100;
+    ctx.drawImage(under, 0, 0, pad.width, pad.height);
+    ctx.globalAlpha = 1;
+    st.strokes.forEach(function (s) { drawStroke(ctx, s); });
+    if (st.grid) {
+      ctx.strokeStyle = st.paper ? "rgba(143,183,240,.22)" : "rgba(22,35,61,.20)";
+      ctx.lineWidth = 1;
+      for (var x = 0; x < pad.width; x += 20) { ctx.beginPath(); ctx.moveTo(x + .5, 0); ctx.lineTo(x + .5, pad.height); ctx.stroke(); }
+      for (var y = 0; y < pad.height; y += 20) { ctx.beginPath(); ctx.moveTo(0, y + .5); ctx.lineTo(pad.width, y + .5); ctx.stroke(); }
+      /* the third and two thirds marks, because the brief says do not centre anything */
+      ctx.strokeStyle = "#c2303f";
+      ctx.lineWidth = 1;
+      [1 / 3, 2 / 3].forEach(function (f) {
+        ctx.beginPath(); ctx.moveTo(Math.round(pad.width * f) + .5, 0);
+        ctx.lineTo(Math.round(pad.width * f) + .5, pad.height); ctx.stroke();
+      });
+    }
+  }
+
+  /* ---------------- input ---------------- */
+  var live = null;
+  function at(e) {
+    var r = pad.getBoundingClientRect();
+    return {
+      x: Math.round((e.clientX - r.left) * (pad.width / r.width) * 10) / 10,
+      y: Math.round((e.clientY - r.top) * (pad.height / r.height) * 10) / 10
+    };
+  }
+  pad.addEventListener("pointerdown", function (e) {
+    e.preventDefault();
+    pad.setPointerCapture && pad.setPointerCapture(e.pointerId);
+    var p = at(e);
+    live = { c: S.autoInk(st.ink, paperHex()), w: st.w, e: st.erase, pts: [p] };
+    st.strokes.push(live);
+    st.redo.length = 0;
+    redraw();
+    pad.focus();
+  });
+  pad.addEventListener("pointermove", function (e) {
+    if (!live) return;
+    var p = at(e);
+    if (st.edge || e.shiftKey) {
+      var a = live.pts[0];
+      p = S.snapAngle(a.x, a.y, p.x, p.y, 8);
+      live.pts = [a, { x: p.x, y: p.y }];
+    } else {
+      var last = live.pts[live.pts.length - 1];
+      if (Math.abs(last.x - p.x) + Math.abs(last.y - p.y) < 0.8) return;
+      live.pts.push(p);
+    }
+    redraw();
+  });
+  ["pointerup", "pointercancel", "pointerleave"].forEach(function (ev) {
+    pad.addEventListener(ev, function () {
+      if (!live) return;
+      if (live.pts.length === 1) live.pts.push({ x: live.pts[0].x + 0.3, y: live.pts[0].y + 0.3 });
+      live = null;
+      st.dirty = true;
+      persist();
+      redraw();
+    });
+  });
+  document.addEventListener("keydown", function (e) {
+    if (/input|textarea|select/i.test((e.target.tagName || ""))) return;
+    if (e.key === "z" && (e.ctrlKey || e.metaKey)) { e.preventDefault(); undo(); }
+    if (e.key === "y" && (e.ctrlKey || e.metaKey)) { e.preventDefault(); redo(); }
+    if (e.key === "g") PH.qs("#grid").click();
+    if (e.shiftKey && live) redraw();
+  });
+
+  function undo() {
+    if (!st.strokes.length) { note("nothing to undo", true); return; }
+    st.redo.push(st.strokes.pop());
+    persist(); redraw();
+    note("undone — " + st.strokes.length + " strokes left");
+  }
+  function redo() {
+    if (!st.redo.length) { note("nothing to redo", true); return; }
+    st.strokes.push(st.redo.pop());
+    persist(); redraw();
+    note("redone");
+  }
+
+  /* ---------------- controls ---------------- */
+  function buttonRow(host, items, onPick, isOn) {
+    host.innerHTML = "";
+    items.forEach(function (it, i) {
+      var b = document.createElement("button");
+      b.type = "button";
+      b.className = "btn" + (isOn(it, i) ? " on" : "");
+      b.textContent = it.label;
+      b.title = it.title || "";
+      b.addEventListener("click", function () { onPick(it, i); });
+      host.appendChild(b);
+    });
+  }
+  function paintControls() {
+    buttonRow(PH.qs("#inks"), S.INKS.map(function (k) {
+      return { label: k.name, hex: k.hex, title: k.hex };
+    }), function (it) {
+      st.ink = it.hex; st.erase = false;
+      PH.qs("#eraser").classList.remove("on");
+      paintControls(); persist();
+    }, function (it) { return !st.erase && it.hex === st.ink; });
+    PH.qsa("#inks button").forEach(function (b, i) {
+      b.style.background = S.INKS[i].hex;
+      var rgb = S.parseHex(S.INKS[i].hex);
+      b.style.color = (rgb.r * .299 + rgb.g * .587 + rgb.b * .114 > 140) ? "#16181f" : "#e8e3d9";
+    });
+    buttonRow(PH.qs("#widths"), S.WIDTHS.map(function (w) {
+      return { label: w + "px", w: w, title: "a " + w + " pixel pen" };
+    }), function (it) { st.w = it.w; paintControls(); persist(); },
+      function (it) { return it.w === st.w && !st.erase; });
+    PH.qs("#eraser").classList.toggle("on", st.erase);
+    PH.qs("#grid").classList.toggle("on", st.grid);
+    PH.qs("#edge").classList.toggle("on", st.edge);
+  }
+  PH.qs("#eraser").addEventListener("click", function () {
+    st.erase = !st.erase; paintControls();
+    note(st.erase ? "eraser: paints the paper colour" : "back to ink");
+  });
+  PH.qs("#grid").addEventListener("click", function () { st.grid = !st.grid; paintControls(); redraw(); persist(); });
+  PH.qs("#edge").addEventListener("click", function () { st.edge = !st.edge; paintControls(); note(st.edge ? "straight edge on — every drag is a line" : "freehand"); });
+  PH.qs("#paper").addEventListener("click", function () {
+    st.paper = (st.paper + 1) % S.PAPERS.length;
+    pad.classList.toggle("ink-dark", st.paper === 1);
+    note("paper: " + S.PAPERS[st.paper].name);
+    paintControls(); redraw(); persist();
+  });
+  PH.qs("#undo").addEventListener("click", undo);
+  PH.qs("#redo").addEventListener("click", redo);
+  PH.qs("#clear").addEventListener("click", function () {
+    if (!st.strokes.length) { note("the sheet is already blank", true); return; }
+    if (!window.confirm("Clear the sheet? " + st.strokes.length + " strokes go away. Undo will not bring them back after an export.")) return;
+    st.strokes = []; st.redo = [];
+    persist(); redraw();
+    note("cleared");
+  });
+  PH.qs("#save").addEventListener("click", function () {
+    persist();
+    note("strokes kept in this browser");
+  });
+  PH.qs("#trace-alpha").addEventListener("input", function (e) {
+    st.alpha = parseInt(e.target.value, 10) || 0;
+    redraw(); persist();
+  });
+  PH.qs("#trace-off").addEventListener("click", function () {
+    uctx.clearRect(0, 0, under.width, under.height);
+    redraw();
+    note("underlay off");
+  });
+  PH.qs("#trace").addEventListener("change", function (e) {
+    var f = e.target.files && e.target.files[0];
+    if (!f) return;
+    var img = new Image();
+    img.onload = function () {
+      var box = S.fit(img.naturalWidth, img.naturalHeight, under.width, under.height);
+      uctx.clearRect(0, 0, under.width, under.height);
+      uctx.drawImage(img, (under.width - box.w) / 2, (under.height - box.h) / 2, box.w, box.h);
+      redraw();
+      note("underlay in at " + box.w + "×" + box.h + " — dim it with the slider");
+      URL.revokeObjectURL(img.src);
+    };
+    img.onerror = function () { note("that image would not load", true); };
+    img.src = URL.createObjectURL(f);
+    e.target.value = "";
+  });
+
+  /* ---------------- export ---------------- */
+  function toPng(scale) {
+    if (!st.strokes.length) { note("draw something first", true); return; }
+    var c = document.createElement("canvas");
+    c.width = pad.width * scale; c.height = pad.height * scale;
+    var g = c.getContext("2d");
+    g.fillStyle = paperHex();
+    g.fillRect(0, 0, c.width, c.height);
+    g.globalAlpha = (100 - st.alpha) / 100;
+    g.drawImage(under, 0, 0, c.width, c.height);
+    g.globalAlpha = 1;
+    st.strokes.forEach(function (s) { drawStroke(g, s, scale); });
+    c.toBlob(function (blob) {
+      if (!blob) { note("the canvas would not encode a PNG", true); return; }
+      var name = S.exportName(slot());
+      if (scale !== 1) name = name.replace(/\.png$/, "-" + scale + "x.png");
+      var url = URL.createObjectURL(blob);
+      var a = document.createElement("a");
+      a.href = url; a.download = name;
+      document.body.appendChild(a); a.click();
+      setTimeout(function () { URL.revokeObjectURL(url); a.remove(); }, 600);
+      note("wrote " + name + " at " + c.width + "×" + c.height + " (" + PH.fmtBytes(blob.size) + "). Drop it in img/.");
+    }, "image/png");
+  }
+  PH.qs("#export").addEventListener("click", function () { toPng(1); });
+  PH.qs("#export-2x").addEventListener("click", function () { toPng(2); });
+
+  /* ---------------- slot rows ---------------- */
+  function slotRows() {
+    var host = PH.qs("#slot-rows");
+    var have = {};
+    host.innerHTML = S.SLOTS.map(function (s, i) {
+      return '<div class="dir-row" data-slot="' + s.name + '">' +
+        '<span class="n">' + (i + 1) + '.</span>' +
+        '<span class="who"><a href="#" data-pick="' + s.name + '">' + PH.esc(s.name) + "</a>" +
+        '<br><span class="sub">' + PH.esc(s.note) + " · on <code>" + PH.esc(s.page) + "</code></span></span>" +
+        '<span class="meta">' + s.w + "×" + s.h + "<br><span data-state=\"" + s.name + "\" class=\"xs faint\">checking…</span></span>" +
+        '<span class="go"><button type="button" class="btn" data-pick="' + s.name + '">' +
+        (s.name === st.slot ? "on the sheet" : "draw this") + "</button></span></div>";
+    }).join("");
+    PH.reveal(PH.qsa(".dir-row", host), 40);
+    /* ask the server which files already exist; a dashed box becomes an image
+       on the target page the same way, so the two can never disagree */
+    var filled = 0;
+    S.SLOTS.forEach(function (s) {
+      var img = new Image();
+      img.onload = function () {
+        if (!img.naturalWidth) return miss(s);
+        filled++;
+        var n = host.querySelector('[data-state="' + s.name + '"]');
+        if (n) { n.innerHTML = '<span class="dot ok"></span>filled'; n.className = "xs"; }
+        PH.qs("#slot-status").innerHTML = '<span class="dot hold"></span>' +
+          '<span style="color:#4c9a6a">' + filled + " of " + S.SLOTS.length + "</span> filled";
+      };
+      img.onerror = function () { miss(s); };
+      img.src = PH.probeSrc(s.file);
+    });
+    function miss(s) {
+      var n = host.querySelector('[data-state="' + s.name + '"]');
+      if (n) { n.innerHTML = '<span class="dot off"></span>owed'; n.className = "xs warn"; }
+    }
+    PH.on(host, "click", function (e) {
+      var b = e.target.closest ? e.target.closest("[data-pick]") : null;
+      if (!b) return;
+      e.preventDefault();
+      pick(b.getAttribute("data-pick"));
+    });
+  }
+  function pick(name) {
+    if (!S.byName(name)) return;
+    st.slot = name;
+    sizeSheet();
+    paintControls();
+    PH.qsa('#slot-rows [data-pick]').forEach(function (b) {
+      if (b.tagName === "BUTTON") b.textContent = b.getAttribute("data-pick") === name ? "on the sheet" : "draw this";
+    });
+    persist();
+    PH.qs("#sheet").scrollIntoView({ block: "start" });
+    note("sheet is " + slot().name + " at " + slot().w + "×" + slot().h);
+  }
+
+  st.alpha = PH.qs("#trace-alpha").value = st.alpha;
+  sizeSheet();
+  paintControls();
+  slotRows();
+  pad.classList.toggle("ink-dark", st.paper === 1);
+  note(st.strokes.length ? "carried over from the last time — " + st.strokes.length + " strokes" : "blank sheet");
+  PH.hydrateArt();
+})();
+</script>
+</body>
+</html>

@@ -101,9 +101,268 @@ footer{border-top:2px solid var(--blue-deep);background:#070a11;padding:20px 0 4
 [contenteditable]:hover{background:#121a2b}
 [contenteditable]:focus{background:#131d31;box-shadow:0 0 0 2px var(--yellow)}
 .mark{
-  font-size:10px;letter-spacing:2px;color:#0a0d16;background:var(--yellow);
+  font-size:11px;letter-spacing:2px;color:#0a0d16;background:var(--yellow);
   padding:0 4px;border-radius:2px;vertical-align:2px;margin-right:7px;
   font-family:"Courier New",monospace;
 }
 .bar{background:#0c1120;border-bottom:1px solid #223050;font-size:12px;color:var(--dim)}
 .bar .wrap{padding:7px 28px;display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+
+/* ===========================================================================
+   PHOTON DIRECTORY — added components
+   Same rules as the brief: flat fills, hard 2px borders, 2px corners,
+   Georgia headings, Courier interface, yellow rings on clickable things.
+   No shadows, no gradients on buttons, no glass.
+   =========================================================================== */
+
+/* keyboard focus is a ring, like the buttons. Never guess what is clickable. */
+a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,
+textarea:focus-visible,[tabindex]:focus-visible,summary:focus-visible{
+  outline:2px solid var(--yellow);outline-offset:2px;border-radius:2px;
+}
+button{
+  font-family:"Courier New",Courier,monospace;font-size:14px;letter-spacing:.5px;
+  background:#101a2d;color:var(--ink);border:2px solid var(--yellow);
+  border-radius:2px;padding:5px 12px;cursor:pointer;
+}
+button:hover{background:var(--red);color:#fff}
+button:active{background:var(--blue-deep)}
+button[disabled],button[aria-disabled=true]{
+  border-color:#3d4a66;color:#6c788f;background:#0c1120;cursor:not-allowed;
+}
+button[disabled]:hover,button[aria-disabled=true]:hover{background:#0c1120;color:#6c788f}
+button.on{background:#2a0a11;color:#ffd77a}
+input,select,textarea{
+  font-family:"Courier New",Courier,monospace;font-size:14px;
+  background:#0c1120;color:var(--ink);border:2px solid var(--blue-deep);
+  border-radius:2px;padding:6px 8px;
+}
+input:focus,select:focus,textarea:focus{border-color:var(--yellow)}
+input[type=checkbox],input[type=radio]{accent-color:var(--yellow);width:14px;height:14px}
+input[type=range]{padding:0;border:0;background:transparent;accent-color:var(--yellow);height:18px}
+label{font-size:13px;color:var(--dim)}
+kbd{
+  font-family:"Courier New",monospace;font-size:12px;color:#ffd77a;
+  border:1px solid #3d4a66;border-bottom-width:2px;border-radius:2px;
+  padding:0 5px;background:#0c1120;white-space:nowrap;
+}
+
+/* --- the directory listing itself ------------------------------- */
+.dir{margin:0;border:2px solid var(--blue-deep);border-radius:2px;background:#0c1120}
+.dir .dir-row{
+  display:flex;gap:14px;align-items:baseline;
+  padding:14px 16px;border-bottom:1px solid var(--blue-deep);
+}
+.dir .dir-row:last-child{border-bottom:0}
+.dir .dir-row:hover{background:#101a2d}
+.dir .n{
+  font-family:Georgia,serif;font-size:17px;color:#6c788f;
+  min-width:34px;flex:0 0 auto;
+}
+.dir .who{flex:1 1 240px;min-width:0}
+.dir .who a{font-family:Georgia,serif;font-size:17px;color:var(--ink);text-decoration:none}
+.dir .who a:hover{color:var(--yellow);text-decoration:underline}
+.dir .who .sub{color:#b9c2d4;font-size:13px;max-width:58ch}
+.dir .meta{flex:0 0 auto;text-align:right;font-size:11px;color:#6c788f;letter-spacing:1px}
+.dir .go{flex:0 0 auto}
+.dot{display:inline-block;width:8px;height:8px;border-radius:2px;margin-right:6px;vertical-align:1px}
+.dot.ok{background:#4c9a6a}
+.dot.hold{background:var(--yellow)}
+.dot.off{background:var(--red-lit)}
+.st{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#9aa3b4}
+
+/* the one animation on the site: lines of the index print in, top to bottom */
+.dir.printing .dir-row{opacity:0;transform:translateY(3px)}
+.dir .dir-row.shown{opacity:1;transform:none;transition:opacity .09s linear,transform .09s linear}
+.caret{color:var(--yellow);margin-left:6px}
+.dir .caret{display:inline-block;font-size:14px;line-height:1}
+.dir-note{font-size:13px;color:#6c788f;margin:8px 0 0}
+
+/* --- notice bar extras ------------------------------------------ */
+.bar .lbl{color:var(--yellow);letter-spacing:1px}
+.bar marquee{flex:1 1 320px;color:#b9c2d4}
+.bar .counter{display:inline-flex;gap:2px;align-items:center}
+.bar .odometer span{
+  display:inline-block;background:#0a0d16;border:1px solid #223050;border-radius:2px;
+  color:#ffd77a;padding:0 4px;font-size:12px;min-width:14px;text-align:center;
+}
+
+/* --- small helpers ---------------------------------------------- */
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.row.end{justify-content:flex-start}
+.spread{display:flex;gap:16px;flex-wrap:wrap;justify-content:space-between;align-items:baseline}
+.mono{font-family:"Courier New",monospace}
+.dim{color:var(--dim)}
+.faint{color:#6c788f}
+.warn{color:#ffd77a}
+.small{font-size:13px}
+.xs{font-size:11px;letter-spacing:1px}
+.mb0{margin-bottom:0}.mt8{margin-top:8px}.mt16{margin-top:16px}.mt24{margin-top:24px}
+.hide{display:none !important}
+.sep{color:#3d4a66;padding:0 4px}
+hr.thin{height:1px;background:#223050;border:0;margin:20px 0}
+
+/* --- game cabinet ------------------------------------------------ */
+.screen{
+  background:#070a11;border:2px solid var(--blue-deep);border-radius:2px;
+  padding:14px;display:flex;flex-direction:column;gap:12px;align-items:flex-start;
+}
+.screen canvas{
+  display:block;background:#05070d;border:1px solid #223050;border-radius:2px;
+  max-width:100%;height:auto;touch-action:none;image-rendering:pixelated;
+}
+.hud{display:flex;gap:16px;flex-wrap:wrap;font-size:13px;color:var(--dim)}
+.hud b{color:#ffd77a;font-weight:normal;font-family:Georgia,serif;font-size:17px}
+.pad{display:grid;grid-template-columns:repeat(3,44px);grid-auto-rows:38px;gap:5px}
+.pad button{padding:0;font-size:13px}
+.pad .blank{visibility:hidden}
+.board{display:grid;gap:2px;user-select:none;justify-content:start}
+.cell{
+  width:26px;height:26px;display:grid;place-items:center;font-size:14px;
+  border:1px solid #223050;background:#0c1120;color:var(--ink);cursor:default;
+  font-family:"Courier New",monospace;padding:0;
+}
+.cell.covered{background:#16233d;border-color:#223050;cursor:pointer}
+.cell.covered:hover{background:#1d2b47}
+.cell.mine{background:var(--red);color:#fff}
+.cell.flag{color:var(--yellow)}
+.cell.n1{color:#8fb7f0}.cell.n2{color:#4c9a6a}.cell.n3{color:#ffd77a}
+.cell.n4{color:#c98ef0}.cell.n5{color:#f08e6a}.cell.n6{color:#6ae0f0}
+.cell.n7{color:#e8e3d9}.cell.n8{color:#9aa3b4}
+.cell.wrong{background:#2a0a11}
+.tile-grid{display:grid;gap:5px;justify-content:start}
+.tile{
+  display:grid;place-items:center;font-family:Georgia,serif;
+  background:#16233d;border:1px solid #223050;border-radius:2px;color:var(--ink);
+}
+.tile.t2{background:#1b2a44}.tile.t4{background:#20355c}
+.tile.t8{background:#2f5fa8;color:#fff}.tile.t16{background:#3c6fc0;color:#fff}
+.tile.t32{background:#7d1220;color:#fff}.tile.t64{background:#9c1a2b;color:#fff}
+.tile.t128{background:#c2303f;color:#fff}.tile.t256{background:#f2c14e;color:#0a0d16}
+.tile.t512{background:#ffd77a;color:#0a0d16}.tile.t1024{background:#fff0c4;color:#0a0d16}
+.tile.t2048{background:#fff;color:#7d1220;border-color:#fff}
+.tile.new{box-shadow:inset 0 0 0 2px var(--yellow)}
+.maze{display:block;background:#05070d;border:1px solid #223050;image-rendering:pixelated}
+.outcome{border:2px solid var(--yellow);background:#2a0a11;padding:10px 14px;border-radius:2px;font-size:14px}
+
+/* --- media player ------------------------------------------------ */
+.stage{background:#05070d;border:2px solid var(--blue-deep);border-radius:2px;overflow:hidden}
+.stage video,.stage audio{display:block;width:100%;background:#000;max-height:58vh}
+.stage .no-media{
+  display:grid;place-items:center;text-align:center;min-height:220px;padding:26px;
+  color:#9aa3b4;font-size:13px;
+}
+.deck{display:flex;gap:8px;flex-wrap:wrap;align-items:center;padding:12px;background:#0c1120;border-top:2px solid var(--blue-deep)}
+.deck .grow{flex:1 1 160px}
+.scrub{width:100%}
+.time{font-size:13px;color:#ffd77a;letter-spacing:1px;white-space:nowrap}
+.drop{
+  border:2px dashed #3d4a66;background:#0c1120;border-radius:2px;padding:18px;
+  text-align:center;color:#b9c2d4;font-size:13px;
+}
+.drop.over{border-color:var(--yellow);background:#101a2d}
+.playlist{border:2px solid var(--blue-deep);border-radius:2px;background:#0c1120;max-height:280px;overflow:auto}
+.playlist .pl-row{display:flex;gap:10px;align-items:baseline;padding:8px 12px;border-bottom:1px solid var(--blue-deep);font-size:13px}
+.playlist .pl-row:last-child{border-bottom:0}
+.playlist .pl-row.now{background:#16233d}
+.playlist .pl-row .idx{color:#6c788f;min-width:26px}
+.playlist .pl-row .nm{flex:1 1 160px;word-break:break-all}
+.playlist .pl-row .sz{color:#6c788f;font-size:11px;white-space:nowrap}
+.playlist .pl-row .x{flex:0 0 auto;background:none;border:0;color:#9aa3b4;padding:0 2px;font-size:13px;cursor:pointer}
+.playlist .pl-row .x:hover{color:var(--yellow);background:none}
+.probe{font-size:13px}
+.probe td:first-child{color:#9aa3b4;width:120px;white-space:nowrap}
+.probe td:last-child{word-break:break-all}
+.err{border-left:4px solid var(--red-lit);padding:8px 12px;background:#2a0a11;color:#ffd77a;font-size:13px}
+
+/* --- sketch pad / notepad --------------------------------------- */
+.pad-wrap{background:#070a11;border:2px solid var(--blue-deep);border-radius:2px;padding:12px}
+.pad-wrap canvas{display:block;background:#e8e3d9;border:1px solid #223050;width:100%;height:auto;touch-action:none;cursor:crosshair}
+.pad-wrap canvas.ink-dark{background:#0c1120}
+.sheet{
+  width:100%;min-height:280px;background:#0c1120;color:var(--ink);
+  border:2px solid var(--blue-deep);border-radius:2px;padding:12px 14px;
+  font-family:"Courier New",monospace;font-size:14px;line-height:1.6;resize:vertical;
+}
+.sheet:focus{border-color:var(--yellow)}
+.pane{display:flex;gap:16px;flex-wrap:wrap;align-items:flex-start}
+.pane > .listside{flex:0 1 220px;min-width:190px}
+.pane > .bodyside{flex:1 1 340px;min-width:0}
+.stacklist{border:2px solid var(--blue-deep);border-radius:2px;background:#0c1120;overflow:hidden}
+.stacklist button{
+  display:block;width:100%;text-align:left;border:0;border-bottom:1px solid #223050;
+  border-radius:0;background:transparent;padding:8px 10px;font-size:13px;color:#b9c2d4;
+}
+.stacklist button:last-child{border-bottom:0}
+.stacklist button:hover{background:#16233d;color:#fff}
+.stacklist button.sel{background:#16233d;color:#ffd77a;border-left:4px solid var(--red-lit)}
+.saved{font-size:11px;letter-spacing:2px;color:#4c9a6a;text-transform:uppercase}
+
+/* --- webring / old-web bits ------------------------------------- */
+.ring{display:flex;gap:10px;align-items:center;justify-content:space-between;
+  border:2px solid var(--blue-deep);background:#0c1120;border-radius:2px;padding:10px 14px;
+  font-size:13px;color:#9aa3b4;flex-wrap:wrap}
+.ring .mid{font-family:Georgia,serif;letter-spacing:1px;color:var(--ink)}
+.badge{
+  display:inline-block;border:1px solid #223050;background:#0c1120;color:#9aa3b4;
+  font-size:11px;letter-spacing:1px;padding:4px 8px;border-radius:2px;
+}
+.badge b{color:#ffd77a;font-weight:normal}
+.badge.alt b{color:#8fb7f0}
+
+/* the logo is not a button: it never gets a ring, it just goes home */
+a.logo:focus-visible{outline:1px dotted var(--yellow);outline-offset:3px}
+
+@media (prefers-reduced-motion:reduce){
+  .dir.printing .dir-row{opacity:1;transform:none}
+  .dir .dir-row.shown{transition:none}
+}
+@media (max-width:640px){
+  .wrap{padding:0 16px}
+  h1{font-size:29px}
+  .indent{padding-left:14px}
+  .indent2{padding-left:14px}
+  .dir .n{min-width:24px}
+  .cell{width:24px;height:24px}
+}
+
+/* --- page-specific repairs found while wiring the hub together ------------ */
+label.btn{color:var(--ink);cursor:pointer}
+label.btn:hover{background:var(--red);color:#fff}
+.dir .who b{color:#ffd77a;font-weight:normal}
+.dir .del-pin{padding:2px 8px;font-size:11px;border-color:#3d4a66;color:#9aa3b4}
+.dir .del-pin:hover{border-color:var(--yellow);color:#fff}
+.draw code{color:#ffd77a}
+.draw b{font-size:13px}
+.stage video{cursor:pointer}
+.stage video.audio-mode{min-height:130px;background:#070a11 url() no-repeat}
+.deck button,.deck .btn{padding:3px 9px;font-size:13px}
+.deck select{padding:3px 6px;font-size:13px;max-width:190px}
+.deck input[type=range]{flex:0 0 auto}
+#scrub{display:block;width:100%}
+.playlist a{color:var(--ink);text-decoration:none}
+.playlist a:hover{color:var(--yellow);text-decoration:underline}
+.sheet::placeholder,.drop::placeholder{color:#6c788f}
+.pad .btn,.row .btn{white-space:nowrap}
+.hud{min-height:22px}
+.outcome .btn{margin-left:8px}
+.tile{min-height:44px}
+.ring a.btn{font-size:13px;padding:4px 10px}
+td code,th code{font-size:13px}
+#game canvas{margin:0 auto}
+.board + .hud{margin-top:2px}
+#hits .dir-row{cursor:default}
+#slot-rows .dir-row{padding:12px 16px}
+#stack button{text-align:left}
+#pad-status{min-height:20px}
+input[type=search]{border:2px solid var(--blue-deep)}
+#pin-form textarea{width:100%}
+#pin-form input{max-width:100%}
+table td:last-child,table th:last-child{width:auto}
+#box-rows td:first-child{white-space:nowrap}
+@media (max-width:640px){
+  .deck{gap:6px}
+  .deck button,.deck .btn{padding:3px 7px;font-size:12px}
+  .tile{min-height:36px}
+  .pad-wrap canvas{max-height:62vh}
+}

@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Not in the drawer — Photon.Directory</title>
+<meta name="description" content="This hub could not find that file. Here is the whole index, and a box to look things up in.">
+<meta name="theme-color" content="#0a0d16">
+<meta name="robots" content="noindex">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%230a0d16'/%3E%3Crect x='3.5' y='3.5' width='25' height='25' fill='none' stroke='%23f2c14e' stroke-width='3'/%3E%3Crect x='9' y='10' width='14' height='2.5' fill='%23e8e3d9'/%3E%3Crect x='9' y='15' width='14' height='2.5' fill='%238fb7f0'/%3E%3Crect x='9' y='20' width='8' height='2.5' fill='%23c2303f'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <a class="logo" href="index.html">Photon<span>.</span>Directory</a>
+    <span class="tag">404 &middot; nothing filed under that</span>
+  </div>
+</header>
+
+<nav>
+  <div class="wrap">
+    <a class="btn" href="index.html">Home</a>
+    <a class="btn" href="games.html">Game Cabinet</a>
+    <a class="btn" href="player.html">Media Player</a>
+    <a class="btn" href="eagler.html">Eaglercraft</a>
+    <a class="btn" href="notepad.html">Notepad</a>
+    <a class="btn" href="sketch.html">Sketch Pad</a>
+    <a class="btn" href="search.html">Search</a>
+    <a class="btn hot" href="brief.html">Design Brief &rarr;</a>
+  </div>
+</nav>
+
+<main class="wrap">
+  <section class="loose">
+    <p class="kicker">Error 404</p>
+    <h1>That is not in the drawer.</h1>
+    <div class="indent">
+      <p class="lead" id="what-missing">The host was asked for a file this hub does not have.</p>
+      <p style="max-width:56ch">
+        This site is a folder of files with no database behind it, which means a missing page is
+        almost always one of three things: a link typed by hand, a file renamed without the index
+        being told, or an entry pinned in a different browser. The whole index is below, so you can
+        carry on from here.
+      </p>
+      <p class="row">
+        <a class="btn hot" href="index.html">The index</a>
+        <a class="btn" href="search.html">Search the hub</a>
+        <a class="btn" href="games.html">Something playable</a>
+      </p>
+    </div>
+  </section>
+
+  <hr class="rule">
+
+  <section id="alt" class="tight">
+    <h2>Everything that is here</h2>
+    <div id="dir" class="dir"></div>
+    <p class="dir-note" id="guess"></p>
+  </section>
+
+  <section class="tight">
+    <div class="draw" data-art="img/drawer.png" data-w="800"
+         data-alt="Ink drawing of a card-catalogue drawer, empty, with one card lying face down in front of it.">
+      <b>DRAW THIS &mdash; for the 404 page (optional, same art as the index)</b> <span class="size">(800 &times; 420)</span>
+      <p style="margin:8px 0 0">The same drawer from the front page, but pulled out and empty, with a single card lying face down on the desk beside it. Nothing centred. This slot will fill itself if you export the index drawing, which is the whole point of the naming scheme.</p>
+      <p style="margin:8px 0 0" class="size">SAVE AS: <code>img/drawer.png</code></p>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p style="margin:0">Photon.Directory &middot; a hand-written <code>404.html</code>, because a dead link
+      deserves an answer. <a href="index.html">Index</a></p>
+  </div>
+</footer>
+
+<script src="js/index-data.js"></script>
+<script src="js/directory.js"></script>
+<script>
+(function () {
+  "use strict";
+  var here = decodeURIComponent(location.pathname || "");
+  var name = here.split("/").pop() || "that page";
+  PH.qs("#what-missing").innerHTML = "There is no <code>" + PH.esc(name) +
+    "</code> in this folder. The path asked for was <code>" + PH.esc(here) + "</code>.";
+  var near = PH.sites().filter(function (s) { return s.file && s.file.indexOf(name.replace(/\.html?$/i, "")) !== -1; })[0];
+  var guess = PH.qs("#guess");
+  if (near) {
+    guess.innerHTML = 'The closest thing filed is <a href="' + PH.esc(near.file) + '">' +
+      PH.esc(near.title) + "</a>, which is probably what you meant.";
+  } else {
+    guess.innerHTML = "Nothing in the index has a similar name. If you pinned this page in another " +
+      "browser, pins live in that browser only — the hub has nowhere to keep them.";
+  }
+  PH.print(PH.qs("#dir"), PH.ordered(), { empty: "The index is empty, which means js/index-data.js did not load." });
+})();
+</script>
+</body>
+</html>

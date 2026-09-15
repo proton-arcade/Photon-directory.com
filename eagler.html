@@ -1,0 +1,263 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>EaglercraftX 1.8 — Photon.Directory</title>
+<meta name="description" content="The whole EaglercraftX 1.8 client in one 17.2 MB HTML file, launched from this hub. Singleplayer needs no network; the relay list is only for multiplayer.">
+<meta name="theme-color" content="#0a0d16">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%230a0d16'/%3E%3Crect x='3.5' y='3.5' width='25' height='25' fill='none' stroke='%23f2c14e' stroke-width='3'/%3E%3Crect x='9' y='10' width='14' height='2.5' fill='%23e8e3d9'/%3E%3Crect x='9' y='15' width='14' height='2.5' fill='%238fb7f0'/%3E%3Crect x='9' y='20' width='8' height='2.5' fill='%23c2303f'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <a class="logo" href="index.html">Photon<span>.</span>Directory</a>
+    <span class="tag">EaglercraftX 1.8 &middot; one file &middot; 17.2 MB</span>
+  </div>
+</header>
+
+<nav>
+  <div class="wrap">
+    <a class="btn" href="index.html">Home</a>
+    <a class="btn" href="games.html">Game Cabinet</a>
+    <a class="btn" href="player.html">Media Player</a>
+    <a class="btn" href="eagler.html">Eaglercraft</a>
+    <a class="btn" href="notepad.html">Notepad</a>
+    <a class="btn" href="sketch.html">Sketch Pad</a>
+    <a class="btn" href="search.html">Search</a>
+    <a class="btn hot" href="brief.html">Design Brief &rarr;</a>
+  </div>
+</nav>
+
+<div class="bar">
+  <div class="wrap">
+    <span class="lbl">HEAVY</span>
+    <marquee behavior="scroll" scrolldelay="80" loop="0">
+      nothing loads until you press the button &mdash; the file is 17,581 KB and it unpacks itself in the tab &middot; singleplayer is fully offline &middot; multiplayer goes through three public relays, which are not &middot; worlds live in IndexedDB, not in a file &middot;
+    </marquee>
+    <a class="btn" href="index.html">back to the index</a>
+  </div>
+</div>
+
+<main class="wrap">
+
+  <section class="tight">
+    <p class="kicker">Biggest thing in the folder</p>
+    <h1>Minecraft 1.8, in one HTML file, on this machine.</h1>
+    <div class="indent">
+      <p class="lead" style="max-width:60ch">
+        <code>Eaglercraft.html</code> sits at the root of this hub: the client, the assets and the
+        launcher, base64'd and gzipped into 17.2 MB of text. On launch it inflates itself with
+        <code>DecompressionStream</code>, falls back to a worker on older browsers, then builds
+        the game. This page does not do that work for it — it just decides when it happens.
+      </p>
+      <p class="small dim" style="max-width:58ch">
+        Which is why the frame is empty until you ask. Loading it by default would put
+        17 MB in front of anyone who only came to read the index.
+      </p>
+    </div>
+  </section>
+
+  <!-- LAUNCH DECK -->
+  <section id="launch">
+    <div class="box">
+      <div class="spread">
+        <h3 style="margin:0">Frame status: <span id="state" class="warn">not loaded</span></h3>
+        <span class="xs faint" id="elapsed"></span>
+      </div>
+      <div id="gate">
+        <p class="row mt16" style="margin-bottom:0">
+          <button type="button" class="btn hot" id="btn-load">Load it in this page</button>
+          <a class="btn" href="Eaglercraft.html" target="_blank" rel="noopener">Open in its own tab</a>
+          <a class="btn" href="Eaglercraft.html" download>Download the file</a>
+          <button type="button" class="btn" id="btn-wipe">Delete saved worlds</button>
+        </p>
+        <p class="xs faint" style="margin:10px 0 0">
+          Prefer the tab: the mouse gets captured properly there, and if the game crashes the
+          hub survives. In the frame, press <kbd>Esc</kbd> to get your cursor back and
+          click once on the picture to give it the keyboard.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- THE GAME ITSELF -->
+  <section id="play" class="hide">
+    <div class="stage" id="frame-box" style="border-color:#f2c14e">
+      <div id="frame-holder" style="background:#000"></div>
+      <div class="deck">
+        <button type="button" class="btn" id="btn-full">fullscreen</button>
+        <button type="button" class="btn" id="btn-reload">reload the game</button>
+        <button type="button" class="btn" id="btn-close">put it away</button>
+        <span class="xs faint">frames here are same-origin, so worlds save into this site's IndexedDB</span>
+      </div>
+    </div>
+  </section>
+
+  <hr class="rule">
+
+  <!-- WHAT IT IS -->
+  <section id="about">
+    <div class="cols">
+      <div style="flex:1 1 320px">
+        <h2>What the file actually does</h2>
+        <table>
+          <tr><th style="width:130px">Stage</th><th>What happens</th></tr>
+          <tr><td>Read</td><td>Two giant base64 blobs are pulled out of <code>&lt;script&gt;</code> tags in its own head — one signed, one the client.</td></tr>
+          <tr><td>Inflate</td><td>Gunzipped through <code>DecompressionStream</code>, or a worker if that is missing. This is the part that takes seconds.</td></tr>
+          <tr><td>Hand-off</td><td>The inflated code becomes a blob URL and is appended as a script tag. If the browser will not let the page XHR a blob, it falls back to a <code>data:</code> URL, which is slower.</td></tr>
+          <tr><td>Boot</td><td>A five second countdown, a skip button, then its own boot menu with <code>showBootMenuOnLaunch</code> left on.</td></tr>
+          <tr><td>Play</td><td>Java-flavoured 1.8.8 semantics on a canvas: chunks, redstone, the whole thing, running on a translated JVM core.</td></tr>
+        </table>
+        <p class="small mt16">
+          This build carries its own notice: <em>“This file is from 07/06/2025”</em>, with a link
+          to the upstream site for anything newer. The hub keeps the file exactly as it arrived
+          — one byte changed and the signature stage would complain.
+        </p>
+      </div>
+      <div style="flex:1 1 260px">
+        <div class="draw" data-art="img/eagler.png" data-w="360"
+             data-alt="Ink drawing of a single cubic block in two-point perspective with a hand-lettered 1.8 under it.">
+          <b>DRAW THIS &mdash; IMAGE 5</b> <span class="size">(square-ish, roughly 360 &times; 360)</span>
+          <p style="margin:8px 0 0">One block, floating, in two-point perspective, drawn with a 0.5 pen and no shading: the top face is grass, so give it four or five short strokes at the edge to say texture. Underneath it, hand-lettered in the same ink: <b>1.8</b>. Off-centre to the left, small, with lots of empty paper around it. Nothing else on the sheet. If it is easier, put a faint red pin in the top-right corner of the paper rather than the block.</p>
+          <p style="margin:8px 0 0" class="size">SAVE AS: <code>img/eagler.png</code></p>
+        </div>
+        <div class="note mt16">
+          <h3>Controls, if you have not been since 2014</h3>
+          <p class="small" style="margin-bottom:4px">
+            <kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> walk &middot; <kbd>space</kbd> jump &middot;
+            <kbd>shift</kbd> sneak &middot; <kbd>ctrl</kbd> sprint &middot; <kbd>E</kbd> inventory &middot;
+            <kbd>T</kbd> chat &middot; <kbd>F3</kbd> debug &middot; left click break &middot; right click place
+            &middot; <kbd>1</kbd>–<kbd>9</kbd> hotbar &middot; <kbd>Esc</kbd> releases the mouse.
+          </p>
+          <p class="small mb0">F5 is the look-over-shoulder key, and it is still F5.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HONEST FINE PRINT -->
+  <section id="fine">
+    <p class="kicker">Read before you blame the hub</p>
+    <h2>Four things that will go wrong, and why</h2>
+    <div class="indent">
+      <table>
+        <tr><th style="width:200px">Symptom</th><th>Cause and what to do</th></tr>
+        <tr><td>It sits on “Decompressing…” for a long time</td>
+          <td>Normal on a slow disk or a phone: 17 MB of base64 has to become about 30 MB of code. On a machine with no <code>DecompressionStream</code> it uses the worker path, which is slower again. Give it twenty seconds before you decide it hung.</td></tr>
+        <tr><td>The mouse will not turn the head</td>
+          <td>Pointer lock needs a click inside the frame first, and some browsers refuse it inside an embedded frame at all. Use “Open in its own tab”, where it always works.</td></tr>
+        <tr><td>Multiplayer says it cannot connect</td>
+          <td>Expected with no network. The file is wired to three public relays (<code>relay.deev.is</code>, <code>relay.lax1dude.net</code>, <code>relay.shhnowisnottheti.me</code>) and those are not in this folder. Singleplayer, including a locally created world, never touches them.</td></tr>
+        <tr><td>Worlds vanished</td>
+          <td>They live in IndexedDB under the name <code>worlds</code>, which is tied to the origin you played from. Opened from <code>file://</code> yesterday and over <code>http://localhost</code> today? Those are different origins and you have two separate sets of worlds. “Delete saved worlds” empties the one you are on now.</td></tr>
+      </table>
+      <p class="small mt16" style="max-width:60ch">
+        One more: this is a re-distribution of a Java game's client, in a browser, by way of
+        <a href="https://github.com/Lax1dude/eaglercraft" target="_blank" rel="noopener">EaglercraftX</a>.
+        The hub ships it unmodified and claims nothing about it. If you want to keep it, keep the
+        file, because there is no download step anywhere on this page.
+      </p>
+    </div>
+  </section>
+
+  <div class="ring mt24" id="ring"></div>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <p style="margin:0 0 6px">Photon.Directory &middot; EaglercraftX 1.8 offline build &middot; <code>Eaglercraft.html</code>, 18,002,822 bytes, unmodified</p>
+    <p style="margin:0"><a href="index.html">Index</a> <span class="sep">|</span> <a href="games.html">Small games</a> when a 17 MB boot is too much</p>
+  </div>
+</footer>
+
+<script src="js/index-data.js"></script>
+<script src="js/directory.js"></script>
+<script>
+(function () {
+  "use strict";
+  PH.markNav();
+  PH.mountRing(PH.qs("#ring"));
+  PH.hydrateArt();
+
+  var SRC = "Eaglercraft.html";
+  var holder = PH.qs("#frame-holder"), frame = null, t0 = 0, timer = 0;
+  var state = PH.qs("#state"), elapsed = PH.qs("#elapsed");
+
+  function setState(text, kind) {
+    state.textContent = text;
+    state.className = kind === "bad" ? "warn" : (kind === "up" ? "" : "warn");
+    if (kind === "up") state.style.color = "#4c9a6a";
+    else state.style.color = "";
+  }
+  function load() {
+    if (frame) return;
+    PH.qs("#play").classList.remove("hide");
+    frame = document.createElement("iframe");
+    frame.src = SRC;
+    frame.title = "EaglercraftX 1.8";
+    frame.setAttribute("allow", "fullscreen; autoplay; pointer-lock; keyboard-map");
+    frame.setAttribute("allowfullscreen", "");
+    frame.style.cssText = "display:block;width:100%;height:min(74vh,620px);border:0;background:#000";
+    holder.appendChild(frame);
+    t0 = Date.now();
+    setState("loading 17.2 MB…", "hold");
+    clearInterval(timer);
+    timer = setInterval(function () {
+      elapsed.textContent = "elapsed " + ((Date.now() - t0) / 1000).toFixed(1) + "s";
+    }, 100);
+    frame.addEventListener("load", function () {
+      clearInterval(timer);
+      setState("running", "up");
+      elapsed.textContent = "booted in " + ((Date.now() - t0) / 1000).toFixed(1) + "s · " +
+        "the game's own countdown is inside the frame";
+    });
+    PH.qs("#play").scrollIntoView({ block: "start" });
+    frame.focus();
+  }
+  function close() {
+    clearInterval(timer);
+    if (frame) { frame.remove(); frame = null; }
+    holder.innerHTML = "";
+    PH.qs("#play").classList.add("hide");
+    setState("not loaded", "hold");
+    elapsed.textContent = "";
+  }
+  function full() {
+    if (!frame) return;
+    var box = PH.qs("#frame-box");
+    var req = box.requestFullscreen || box.webkitRequestFullscreen;
+    var ex = document.fullscreenElement || document.webkitFullscreenElement;
+    if (ex) { (document.exitFullscreen || document.webkitExitFullscreen).call(document); return; }
+    if (req) {
+      var r = req.call(box);
+      if (r && r["catch"]) r["catch"](function (e) { setState("fullscreen refused: " + e.name, "bad"); });
+    }
+  }
+  PH.on(PH.qs("#btn-load"), "click", load);
+  PH.on(PH.qs("#btn-close"), "click", close);
+  PH.on(PH.qs("#btn-full"), "click", full);
+  PH.on(PH.qs("#btn-reload"), "click", function () {
+    /* a brand new element rather than frame.src = SRC again: the game keeps its
+       inflated client on window, and only a fresh document drops that cache */
+    close();
+    load();
+  });
+  PH.on(PH.qs("#btn-wipe"), "click", function () {
+    if (!window.indexedDB) { setState("no IndexedDB in this browser", "bad"); return; }
+    if (!window.confirm("Delete every world stored under this origin? There is no undo and no copy.")) return;
+    var req = indexedDB.deleteDatabase("worlds");
+    req.onsuccess = function () { setState("worlds deleted", "up"); };
+    req.onerror = function () { setState("could not delete worlds", "bad"); };
+    req.onblocked = function () { setState("a loaded frame is holding the database — put it away first", "bad"); };
+  });
+
+  /* deep link: #load starts it straight away */
+  if (location.hash === "#load") load();
+})();
+</script>
+</body>
+</html>
